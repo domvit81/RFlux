@@ -1,0 +1,26 @@
+##exportPattern("^[[:alpha:]]+")
+
+ export(cleanFlux,
+	ecworkset,
+	eddypro_run,
+	get_md,
+	inst_prob_test,
+	mahrt,
+	qcStat)
+	
+import(utils)
+import(bit64)
+
+
+importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "quantile", "time", "ts", "window")
+importFrom("utils", "write.table")
+importFrom("data.table", "fread", "fwrite")
+importFrom("xts", "xts")
+importFrom("stlplus", "stlplus")
+importFrom("alphaOutlier", "aout.laplace")
+importFrom("robustbase", "Qn")
+importFrom("egcm", "detrend")
+importFrom("timeDate", "kurtosis", "skewness")
+importFrom("imputeTS", "statsNA")
+importFrom("stringr", "str_sub")
+importFrom("zoo", "rollapply", "coredata")

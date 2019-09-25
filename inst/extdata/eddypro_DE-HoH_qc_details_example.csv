@@ -1,0 +1,4 @@
+file_info,,,,stationarity test,,,,,,,,,,,,,well-developed_turbulence_test,,,,,
+filename,date,time,DOY,dev(u),dev(w),dev(ts),dev(co2),dev(h2o),dev(w/u),dev(w/ts),dev(w/co2),dev(w/h2o),flag(w/u),flag(w/ts),flag(w/co2),flag(w/h2o),dev(u),dev(w),dev(ts),flag(u),flag(w),flag(ts)
+,[yyyy-mm-dd],[HH:MM],[ddd.ddd],[%],[%],[%],[%],[%],[%],[%],[%],[%],[#],[#],[#],[#],[%],[%],[%],[#],[#],[#]
+DE-HoH_EC_201907301200_v01.csv,2019-07-30,12:00,211.4999,22,4,21,30,11,12,9,18,7,1,1,2,1,24,5,5,2,1,1
