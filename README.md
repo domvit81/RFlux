@@ -6,7 +6,7 @@ An R graphical user interface for processing eddy covariance raw data and releas
 
 To install the RFlux package
 ```{r, eval = F}
-# install.packages("devtools")
+install.packages("devtools")
 devtools::install_github("domvit81/RFlux")
 ```
 
