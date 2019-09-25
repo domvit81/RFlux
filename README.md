@@ -8,6 +8,7 @@ To install the RFlux package
 ```{r, eval = F}
 install.packages("devtools")
 devtools::install_github("domvit81/RFlux")
+help(package=RFlux)
 ```
 
 
