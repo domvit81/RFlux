@@ -8,7 +8,7 @@ Cleaning eddy covariane flux measurements
 This is the main function of the RFlux library. It performs the data cleaning procedure described by Vitale et al (2019).
 }
 \usage{
-cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL)
+cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +23,9 @@ cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL)
 }
   \item{FileName}{
   file name for the output file. Deafult is NULL.
+}
+  \item{plotQC}{
+  Logical. Should the details of data cleaning procedure be saved. If TRUE a .jpeg file for each flux variables will be stored in the path_output file. Default is FALSE.
 }
 }
 \details{
@@ -181,7 +184,8 @@ PATH_ECMD <- system.file("extdata", "DE-HoH_ecmd.csv", package = "RFlux")
 cleanset <- cleanFlux(path_workset=PATH_WORKSET,
                       path_ecmd=PATH_ECMD,
                       path_output=NULL,
-                      FileName=NULL)
+                      FileName=NULL,
+                      plotQC=FALSE)
 str(cleanset)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

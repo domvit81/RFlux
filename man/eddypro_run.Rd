@@ -66,7 +66,8 @@ MD <- get_md(path_ecmd=PATH_ECMD,
              path_output=PATH_OUTPUT,
              online=TRUE,
              path_sa_file=PATH_SA_FILE,
-             path_pf_file=PATH_PF_FILE)
+             path_pf_file=PATH_PF_FILE,
+             tlag_meth=2)
 
 PATH_EDDYPRO_BIN <- "/Applications/eddypro.app/Contents/MacOS/bin" ## put your path!
 PATH_EDDYPRO_PROJ <- PATH_OUTPUT

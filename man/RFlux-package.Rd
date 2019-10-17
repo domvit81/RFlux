@@ -27,7 +27,7 @@ Flux estimation involves the following options/methods:
 \item In-situ spectral corrections (Fratini et al, 2012).
 }
 
-The open source EddyPro software (LI-COR Biosciences, 2019) is used to this aim employing also the estimation of micrometeorological parameters useful in subsequent analyses. It is required the EddyPro software is installed on your system (for download see \url{www.licor.com/EddyPro}).
+The open source EddyPro software (registered trademark, LI-COR Biosciences, 2019) is used to this aim employing also the estimation of micrometeorological parameters useful in subsequent analyses. It is required the EddyPro software is installed on your system (for download see \url{www.licor.com/EddyPro}).
 
 Quality control involves the data cleaning procedure described in Vitale et al (2019). Its implementation involves a three-step procedure
 \describe{
