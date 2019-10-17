@@ -25,7 +25,7 @@ cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE
   file name for the output file. Deafult is NULL.
 }
   \item{plotQC}{
-  Logical. Should the details of data cleaning procedure be saved. If TRUE a .jpeg file for each flux variables will be stored in the path_output file. Default is FALSE.
+  Logical. Should the details of data cleaning procedure be saved. If TRUE two .jpeg files (Details and Synthesis) for each flux variables will be stored in the path specified by path_output. Default is FALSE.
 }
 }
 \details{
