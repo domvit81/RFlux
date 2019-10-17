@@ -1,6 +1,6 @@
 
 
-cleanFlux <- function(path_workset, path_ecmd, path_output=NULL, FileName=NULL){
+cleanFlux <- function(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE){
 
 ec_data0 <- fread(path_workset, sep=",", header=TRUE, data.table=FALSE, na.strings=c(NA, "-9999"))
 timestamp_ec_data0 <- as.POSIXct(as.character(ec_data0[,1]), format="%Y%m%d%H%M", tz="GMT")
@@ -15,6 +15,7 @@ reg_ts <- xts(rep(1, length(reg_timestamp)), order.by=reg_timestamp)
 ## Building time series of wind sector to exclude
 md_tmp <- fread(path_ecmd, integer64="numeric", data.table=FALSE, na.strings=c(NA, "-9999"))
 md_tmp0 <- rbind(md_tmp, replace(md_tmp[nrow(md_tmp),], 2, as.character(format(Sys.time(), "%Y%m%d%H", tz="GMT"))))
+site <- md_tmp[1,"SITEID"]
 
 time_S <- as.POSIXct("2000010100", format="%Y%m%d%H", tz="GMT")
 WS2E_c1 <- c()
@@ -256,7 +257,7 @@ NEE1 <- replace(as.vector(NEE_raw), INT_NEE_SevEr, NA)
 NEE2 <- replace(NEE1, LSR_NEE_SevEr, NA)
 NEE3 <- replace(NEE2, SC_NEE_SevEr,NA)
 NEE4 <- replace(NEE3, ITC_SevEr, NA)
-NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + ec_data[,"CO2str"]
+NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + as.vector(ec_data[,"CO2str"])
 
 
 LE1 <- replace(as.vector(LE_raw), INT_LE_SevEr, NA)
@@ -278,10 +279,11 @@ H5 <- replace(H4, ST_H_SevEr, NA)
 #
 #################################################################################################################################################################################################################
 
-if(N < 48*10) warning(call.=FALSE, "Outlier detection procedure as described in Vitale et al (2019) is performed when data cover a period of at least 10 consecutive days")
-if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) warning(call.=FALSE, "NEE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")
-if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) warning(call.=FALSE, "LE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")
-if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) warning(call.=FALSE, "H flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")
+if(N < 48*10) {warning(call.=FALSE, "Outlier detection procedure as described in Vitale et al (2019) is performed when data cover a period of at least 10 consecutive days")}
+	
+if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "NEE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "LE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "H flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
 
 NEE_cleaned <- NEE5
 spike1nee <- NA
@@ -294,7 +296,7 @@ spike1h <- NA
 spike2h <- NA
 
 
-if(N >= 48*100 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48))){
+if(N >= 48*10 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48))){
 	for (flux in 1:3){
 		TS <- cbind(NEE5, LE5, H5)[,flux]
 		if (flux==1) {flux_type <- "NEE"; C <- 1000}
@@ -345,6 +347,218 @@ if(N >= 48*100 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.n
 	}
 }
 
+NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + as.vector(ec_data[,"CO2str"])
+LE5 <- replace(LE4, ST_LE_SevEr, NA)
+H5 <- replace(H4, ST_H_SevEr, NA)
+
+
+#################################################################################################################################################################################################################
+#
+# Plot functions
+#
+#################################################################################################################################################################################################################
+if (plotQC==TRUE) {
+	YLIM <- c(max(-100, min(NEE_cleaned, na.rm=TRUE)*1.5), min(70, max(NEE_cleaned, na.rm=TRUE)*2.5))
+	step <- 20
+
+	jpeg(paste(path_output, "/",site,"_NEE_QC_Details.jpeg", sep=""), width=480*2.5, height=480*2.5)
+	par(mfrow=c(7,1), mar=c(0,4,0,0), oma=c(5,3,4,4), las=1, cex.axis=1.75, cex=1.25, cex.lab=1.5)
+	plot(1:N, NEE_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE_raw)))/N*100,1), "% of missing data", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=2.5, line=1, font=2)
+	mtext(side=4, "(a)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE1, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE1)))/N*100,1), "% of missing data after EC System Malfunctions Detection", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=4, "(b)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE2, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE2)))/N*100,1), "% of missing data after Low Signal Resolution Test", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=4, "(c)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	mtext(side=2, expression(NEE~~(mu*mol~~CO[2]~~m^2~s^-1)), las=0, cex=2.5, line=4);
+	legend("topright", paste(round(length(which(is.na(NEE3)))/N*100,1), "% of missing data after Structural Changes Tests", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE4, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE4)))/N*100,1), "% of missing data after Integral Turbulence Characteristics Test", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=4, "(e)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE5, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE5)))/N*100,1), "% of missing data after Stationarity Test", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=4, "(f)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	plot(1:N, NEE_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,50,step))
+	legend("topright", paste(round(length(which(is.na(NEE_cleaned)))/N*100,1), "% of missing data after removal of outliers affected by ModEr", sep=""), bty="n", cex=1.5, text.col=1)
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE, cex=2, line=-.5)
+	mtext(side=1, "DoY", cex=2.5, line=3)
+	mtext(side=4, "(g)", cex=2.5, bty="n", font=2, line=.6)
+	box(lwd=1.5)
+	dev.off()
+
+
+	jpeg(paste(path_output,  "/", site,"_NEE_QC_Synthesis.jpeg", sep=""), width=480*8, height=480*5)
+	par(mfrow=c(3,1), mar=c(0,6,0,0), omi=c(3.5,1,2,.5), las=1, cex=3, cex.axis=2, cex.lab=2, lwd=5)
+	plot(1:N, NEE_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-100,70,step))
+	legend("bottomright", paste("NEE - missing data ", round(length(which(is.na(NEE_raw)))/N*100,1), "%", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=8, line=1, font=2)
+	plot(1:N, replace(NEE_raw, which(NEE_SevEr_flag==1), NA), type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, replace(NEE_raw, which(NEE_SevEr_flag==1), NA), pch=19, cex=.25)
+	axis(2,  seq(-100,70,step))
+	legend("bottomright", paste(round(length(which(is.na(NEE5)))/N*100,1), "% of missing data after rejection of fluxes affected by SevEr", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=2, expression(NEE~~~(mu*mol~~CO[2]~~m^2~s^-1)), las=0, cex=7, line=4)
+	plot(1:N, NEE_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, NEE_cleaned, pch=19, cex=.25)
+	axis(2,  seq(-100,70,step))
+	legend("bottomright", paste(round(length(which(is.na(NEE_cleaned)))/N*100,1), "% of missing data after rejection of outlying fluxes affected by ModEr", sep=""), bty="n", cex=2, text.col=1)
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE)
+	mtext(side=1, "DoY", cex=7, line=4)
+	dev.off()
+
+
+
+
+	YLIM <- c(max(-300,min(LE_cleaned, na.rm=TRUE)*1.1), min(1250, max(LE_cleaned, na.rm=TRUE)*2.1))
+	step <- 250
+
+	jpeg(paste(path_output, "/",site,"_LE_QC_Details.jpeg", sep=""),  width=480*2.5, height=480*2.5)
+	par(mfrow=c(7,1), mar=c(0,4,0,0), oma=c(5,3,4,4), las=1, cex.axis=1.75, cex=1.25, cex.lab=1.5)
+	plot(1:N, LE_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE_raw)))/N*100,1), "% of missing data", sep=""), bty="n", cex=1.5, text.col=1)
+	mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=2.5, line=1, font=2)
+	mtext(side=4, "(a)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, LE1, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE1)))/N*100,1), "% of missing data after EC System Malfunctions Detection", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(b)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, LE2, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE2)))/N*100,1), "% of missing data after Low Signal Resolution Test", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(c)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, LE3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	mtext(side=2, expression(LE~~(W~~m^2)), las=0, cex=2.5, line=4.15, adj=0.1)
+	legend("topright", paste(round(length(which(is.na(LE3)))/N*100,1), "% of missing data after Structural Changes Tests",  sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, LE4, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE4)))/N*100,1), "% of missing data after Integral Turbulence Characteristics Test",  sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(e)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, LE5, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste("after Stationarity Test (", round(length(which(is.na(LE5)))/N*100,1), "% of missing data)", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(f)", cex=2.5, bty="n", font=2, line=.5)
+	plot(1:N, LE_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE_cleaned)))/N*100,1), "% of missing data after removal of outliers affected by ModEr",  sep=""), bty="n", cex=1.5, text.col=1) 
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE, cex=2, line=-.5)
+	mtext(side=1, "DoY", cex=2.5, line=3)
+	mtext(side=4, "(g)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	dev.off()
+
+	jpeg(paste(path_output, "/", site, "_LE_QC_Synthesis.jpeg", sep=""), width=480*8, height=480*5)
+	par(mfrow=c(3,1), mar=c(0,6,0,0), omi=c(3.5,1,2,.5), las=1, cex=3, cex.axis=2, cex.lab=2, lwd=5)
+	plot(1:N, LE_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste("LE (", round(length(which(is.na(LE_raw)))/N*100,1), "% of missing data)", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=8, line=1, font=2)
+	plot(1:N, replace(LE_raw, which(LE_SevEr_flag==1), NA), type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, replace(LE_raw, which(LE_SevEr_flag==1), NA), pch=19, cex=.25)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE5)))/N*100,1), "% of missing data after rejection of fluxes affected by SevEr", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=2, expression(LE~~~(W~~m^-2)), las=0, cex=7, line=4)
+	plot(1:N, LE_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, LE_cleaned, pch=19, cex=.25)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(LE_cleaned)))/N*100,1), "% of missing data after rejection of outlying fluxes affected by ModEr", sep=""), bty="n", cex=2, text.col=1)
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE)
+	mtext(side=1, "DoY", cex=7, line=4)
+	dev.off()
+
+	YLIM <- c(max(-300, min(H_cleaned, na.rm=TRUE)*1.1), min(1250, max(H_cleaned, na.rm=TRUE))*2.2)
+	step <- 250
+
+	jpeg(paste(path_output, "/",site,"_H_QC_Details.jpeg", sep=""), width=480*2.5, height=480*2.5)
+	par(mfrow=c(7,1), mar=c(0,4,0,0), oma=c(5,3,4,4), las=1, cex.axis=1.75, cex=1.25, cex.lab=1.5)
+	plot(1:N, H_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H_raw)))/N*100,1), "% of missing data", sep=""), bty="n", cex=1.5, text.col=1)
+	#mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=2.5, line=1, font=2)
+	mtext(side=4, "(a)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, H1, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H1)))/N*100,1), "% of missing data after EC System Malfunctions Detection", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(b)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, H2, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H2)))/N*100,1), "% of missing data after Low Signal Resolution Test", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(c)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, H3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	mtext(side=2, expression(H~~(W~~m^2)), las=0, cex=2.5, line=4.5, adj=0.1)
+	legend("topright", paste(round(length(which(is.na(H3)))/N*100,1), "% of missing data after Structural Changes Tests", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, H4, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H4)))/N*100,1), "% of missing data after Integral Turbulence Characteristics Test", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(e)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	plot(1:N, H5, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H5)))/N*100,1), "% of missing data after Stationarity Test", sep=""), bty="n", cex=1.5, text.col=1) 
+	mtext(side=4, "(f)", cex=2.5, bty="n", font=2, line=.5)
+	plot(1:N, H_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H_cleaned)))/N*100,1), "% of missing data after removal of outliers affected by ModEr", sep=""), bty="n", cex=1.5, text.col=1) 
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE, cex=2, line=-.5)
+	mtext(side=1, "DoY", cex=2.5, line=3)
+	mtext(side=4, "(g)", cex=2.5, bty="n", font=2, line=.5)
+	box(lwd=1.5)
+	dev.off()
+
+	jpeg(paste(path_output, "/", site, "_H_QC_Synthesis.jpeg", sep=""), width=480*8, height=480*5)
+	par(mfrow=c(3,1), mar=c(0,6,0,0), omi=c(3.5,1,2,.5), las=1, cex=3, cex.axis=2, cex.lab=2, lwd=5)
+	plot(1:N, H_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste("H (", round(length(which(is.na(H_raw)))/N*100,1), "% of missing data", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=3, paste(site, " from ",format(time(ec_data)[1],"%Y-%m-%d", tz="GMT"), " to ",format(time(ec_data)[N],"%Y-%m-%d", tz="GMT"),  sep=""), cex=8, line=1, font=2)
+	plot(1:N, replace(H_raw, which(H_SevEr_flag==1), NA), type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, replace(H_raw, which(H_SevEr_flag==1), NA), pch=19, cex=.25)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H5)))/N*100,1), "% of missing data after rejection of fluxes affected by SevEr", sep=""), bty="n", cex=2, text.col=1) 
+	mtext(side=2, expression(H~~~(W~~m^-2)), las=0, cex=7, line=4)
+	plot(1:N, H_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
+	points(1:N, H_cleaned, pch=19, cex=.25)
+	axis(2,  seq(-250,1000,step))
+	legend("topright", paste(round(length(which(is.na(H_cleaned)))/N*100,1), "% of missing data after rejection outlying fluxes affected by ModEr", sep=""), bty="n", cex=2, text.col=1)
+	axis(1, at=seq(1,N,48*7), labels=format(time(ec_data), "%j")[seq(1,N,48*7)], col="white", tick=FALSE)
+	mtext(side=1, "DoY", cex=7, line=4)
+	dev.off()
+
+}
+
+
+
 #################################################################################################################################################################################################################
 #
 # Exporting Cleaning DataSet 
@@ -371,7 +585,7 @@ set2exp <- data.frame(
 
 "FC" = as.vector(replace(ec_data[,"CO2flux"], nee_ind_miss, NA)),
 "SC" = as.vector(replace(ec_data[,"CO2str"], nee_ind_miss, NA)),
-"NEE_UNCLEANED" = as.vector(replace(ec_data[,"CO2flux"], nee_ind_miss, NA)),
+"NEE_UNCLEANED" = as.vector(replace(ec_data[,"CO2flux"]+ec_data[,"CO2str"], nee_ind_miss, NA)),
 "NEE" = as.vector(NEE_cleaned),
 "NEE_DATA_FLAG" = replace(replace(replace(zero_vector, NEE_SevEr_ind, 2), spike2nee, 1), nee_ind_miss, 2),
 

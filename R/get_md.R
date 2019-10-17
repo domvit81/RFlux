@@ -1,5 +1,5 @@
 
-get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL){
+get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL, tlag_meth){
 
 dir.create(path_output, showWarnings=FALSE, recursive=TRUE)
 
@@ -632,7 +632,7 @@ if(md["GA_PATH"]=="open") "\nwpl_meth=1",
 "\nrot_meth=3",### 1 Double Rotation, 3 Planar Fit
 "\ntap_win=3",
 "\ntimeconst=250.0",
-"\ntlag_meth=2",## 1 Costant; 2 MaxCov with default; 3 MaxCov; 4 Autom optim (time consuming)
+"\ntlag_meth=", tlag_meth, ## 0 None; 1 Costant; 2 MaxCov with default; 3 MaxCov; 4 Autom optim (time consuming)
 "\nu_offset=0",
 "\nv_offset=0",
 "\nw_offset=0",
