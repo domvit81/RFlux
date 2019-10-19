@@ -29,7 +29,7 @@ cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL,
   Logical. Should the details of data cleaning procedure be saved. If TRUE two .jpeg files (Details and Synthesis) for each flux variables will be stored in the path specified by path_output. Default is FALSE.
 }
   \item{storage}{
-  Logical. Should the Net Ecosystem Exchange flux takes into account the CO2 storage term. Default is FALSE.
+  Logical. Should the Net Ecosystem Exchange flux take into account the CO2 storage term. Default is FALSE.
 }
 }
 \details{
