@@ -1,6 +1,6 @@
 
 
-cleanFlux <- function(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE){
+cleanFlux <- function(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE, storage=FALSE){
 
 ec_data0 <- fread(path_workset, sep=",", header=TRUE, data.table=FALSE, na.strings=c(NA, "-9999"))
 timestamp_ec_data0 <- as.POSIXct(as.character(ec_data0[,1]), format="%Y%m%d%H%M", tz="GMT")
@@ -14,7 +14,7 @@ reg_ts <- xts(rep(1, length(reg_timestamp)), order.by=reg_timestamp)
 
 ## Building time series of wind sector to exclude
 md_tmp <- fread(path_ecmd, integer64="numeric", data.table=FALSE, na.strings=c(NA, "-9999"))
-md_tmp0 <- rbind(md_tmp, replace(md_tmp[nrow(md_tmp),], 2, as.character(format(Sys.time(), "%Y%m%d%H", tz="GMT"))))
+md_tmp0 <- rbind(md_tmp, replace(md_tmp[nrow(md_tmp),], 2, as.character(format(Sys.time(), "%Y%m%d%H", tz="GMT"))), make.row.names=FALSE)
 site <- md_tmp[1,"SITEID"]
 
 time_S <- as.POSIXct("2000010100", format="%Y%m%d%H", tz="GMT")
@@ -24,22 +24,24 @@ WS2E_c2 <- c()
 WS2E_w2 <- c()
 WS2E_c3 <- c()
 WS2E_w3 <- c()
+
+
 for (i in 1:(nrow(md_tmp0)-1)){
-time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,8), format="%Y%m%d", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,8), format="%Y%m%d", tz="GMT"), by="30 min")
-time_S <- c(time_S, time_S0)
-WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c1"], length(time_S0))
-WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w1"], length(time_S0))
-WS2E_c1 <- c(WS2E_c1, WS2E_c0)
-WS2E_w1 <- c(WS2E_w1, WS2E_w0)
-WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c2"], length(time_S0))
-WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w2"], length(time_S0))
-WS2E_c2 <- c(WS2E_c2, WS2E_c0)
-WS2E_w2 <- c(WS2E_w2, WS2E_w0)
-WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c3"], length(time_S0))
-WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w3"], length(time_S0))
-WS2E_c3 <- c(WS2E_c3, WS2E_c0)
-WS2E_w3 <- c(WS2E_w3, WS2E_w0)
-}
+	time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,8), format="%Y%m%d", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,8), format="%Y%m%d", tz="GMT")-1800, by="30 min")
+	time_S <- c(time_S, time_S0)
+	WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c1"], length(time_S0))
+	WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w1"], length(time_S0))
+	WS2E_c1 <- c(WS2E_c1, WS2E_c0)
+	WS2E_w1 <- c(WS2E_w1, WS2E_w0)
+	WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c2"], length(time_S0))
+	WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w2"], length(time_S0))
+	WS2E_c2 <- c(WS2E_c2, WS2E_c0)
+	WS2E_w2 <- c(WS2E_w2, WS2E_w0)
+	WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c3"], length(time_S0))
+	WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w3"], length(time_S0))
+	WS2E_c3 <- c(WS2E_c3, WS2E_c0)
+	WS2E_w3 <- c(WS2E_w3, WS2E_w0)
+	}
 
 windsect2excl.xts <- xts(cbind(WS2E_c1, WS2E_w1, WS2E_c2, WS2E_w2, WS2E_c3, WS2E_w3), order.by=time_S[-1])
 wind_sector_exclusion.xts <- window(windsect2excl.xts, start=t_start, end=t_end) 
@@ -257,7 +259,17 @@ NEE1 <- replace(as.vector(NEE_raw), INT_NEE_SevEr, NA)
 NEE2 <- replace(NEE1, LSR_NEE_SevEr, NA)
 NEE3 <- replace(NEE2, SC_NEE_SevEr,NA)
 NEE4 <- replace(NEE3, ITC_SevEr, NA)
-NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + as.vector(ec_data[,"CO2str"])
+
+if(storage==TRUE) {
+	oor_Sc <- c(which(ec_data[,"CO2str"]>70), which(ec_data[,"CO2str"]< -100));
+	Sc0 <- replace(as.vector(ec_data[,"CO2str"]), oor_Sc, NA)
+	Sc_Outlier <- as.numeric(Boxplot(as.vector(Sc0)~hod, range=3, id.n=Inf, main="CO2 Storage - Outlier Detection", ylab=expression(NEE~~(mu*mol~~CO[2]~~m^2~s^-1)), xlab="Hour of Day", cex=.5));
+	Sc <- replace(na.approx(replace(as.vector(Sc0), Sc_Outlier, NA), na.rm=FALSE), which(is.na(ec_data[,"CO2str"])), NA)
+	}
+
+if(storage==FALSE) Sc <- rep(0,N)
+
+NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + Sc
 
 
 LE1 <- replace(as.vector(LE_raw), INT_LE_SevEr, NA)
@@ -347,10 +359,6 @@ if(N >= 48*10 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na
 	}
 }
 
-NEE5 <- replace(NEE4, ST_NEE_SevEr, NA) + as.vector(ec_data[,"CO2str"])
-LE5 <- replace(LE4, ST_LE_SevEr, NA)
-H5 <- replace(H4, ST_H_SevEr, NA)
-
 
 #################################################################################################################################################################################################################
 #
@@ -359,7 +367,9 @@ H5 <- replace(H4, ST_H_SevEr, NA)
 #################################################################################################################################################################################################################
 if (plotQC==TRUE) {
 	YLIM <- c(max(-100, min(NEE_cleaned, na.rm=TRUE)*1.5), min(70, max(NEE_cleaned, na.rm=TRUE)*2.5))
-	step <- 20
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) < 20) step <- 5
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) > 20) step <- 10
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) > 30) step <- 20
 
 	jpeg(paste(path_output, "/",site,"_NEE_QC_Details.jpeg", sep=""), width=480*2.5, height=480*2.5)
 	par(mfrow=c(7,1), mar=c(0,4,0,0), oma=c(5,3,4,4), las=1, cex.axis=1.75, cex=1.25, cex.lab=1.5)
@@ -405,6 +415,11 @@ if (plotQC==TRUE) {
 	dev.off()
 
 
+	YLIM <- c(max(-100, min(NEE_cleaned, na.rm=TRUE)*2), min(70, max(NEE_cleaned, na.rm=TRUE)*1.25))
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) < 20) step <- 5
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) > 20) step <- 10
+	if(diff(range(NEE_cleaned, na.rm=TRUE)) > 30) step <- 20
+	
 	jpeg(paste(path_output,  "/", site,"_NEE_QC_Synthesis.jpeg", sep=""), width=480*8, height=480*5)
 	par(mfrow=c(3,1), mar=c(0,6,0,0), omi=c(3.5,1,2,.5), las=1, cex=3, cex.axis=2, cex.lab=2, lwd=5)
 	plot(1:N, NEE_raw, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
@@ -584,8 +599,8 @@ set2exp <- data.frame(
 "LE_DATA_FLAG" = replace(replace(replace(zero_vector, LE_SevEr_ind, 2), spike2le, 1), le_ind_miss, 2),
 
 "FC" = as.vector(replace(ec_data[,"CO2flux"], nee_ind_miss, NA)),
-"SC" = as.vector(replace(ec_data[,"CO2str"], nee_ind_miss, NA)),
-"NEE_UNCLEANED" = as.vector(replace(ec_data[,"CO2flux"]+ec_data[,"CO2str"], nee_ind_miss, NA)),
+"SC" = replace(Sc, nee_ind_miss, NA), #as.vector(replace(ec_data[,"CO2str"], nee_ind_miss, NA)),
+"NEE_UNCLEANED" = as.vector(replace(ec_data[,"CO2flux"]+Sc, nee_ind_miss, NA)), #as.vector(replace(ec_data[,"CO2flux"]+ec_data[,"CO2str"], nee_ind_miss, NA)),
 "NEE" = as.vector(NEE_cleaned),
 "NEE_DATA_FLAG" = replace(replace(replace(zero_vector, NEE_SevEr_ind, 2), spike2nee, 1), nee_ind_miss, 2),
 
