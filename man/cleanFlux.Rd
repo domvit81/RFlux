@@ -8,7 +8,8 @@ Cleaning eddy covariane flux measurements
 This is the main function of the RFlux library. It performs the data cleaning procedure described by Vitale et al (2019).
 }
 \usage{
-cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE)
+cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL,
+          plotQC=FALSE, storage=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,6 +27,9 @@ cleanFlux(path_workset, path_ecmd, path_output=NULL, FileName=NULL, plotQC=FALSE
 }
   \item{plotQC}{
   Logical. Should the details of data cleaning procedure be saved. If TRUE two .jpeg files (Details and Synthesis) for each flux variables will be stored in the path specified by path_output. Default is FALSE.
+}
+  \item{storage}{
+  Logical. Should the Net Ecosystem Exchange flux takes into account the CO2 storage term. Default is FALSE.
 }
 }
 \details{
@@ -178,6 +182,7 @@ Domenico Vitale
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
+\donttest{
 PATH_WORKSET <- system.file("extdata", "ecworkset_example.csv", package = "RFlux")
 PATH_ECMD <- system.file("extdata", "DE-HoH_ecmd.csv", package = "RFlux")
 
@@ -185,8 +190,10 @@ cleanset <- cleanFlux(path_workset=PATH_WORKSET,
                       path_ecmd=PATH_ECMD,
                       path_output=NULL,
                       FileName=NULL,
-                      plotQC=FALSE)
+                      plotQC=FALSE,
+                      storage=TRUE)
 str(cleanset)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

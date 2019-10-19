@@ -58,7 +58,7 @@ LI-COR Biosciences: EddyPro 7.0.4: Help and User's Guide, LI-COR Biosciences, Li
 
 Moncrieff, J., Clement, R., Finnigan, J., Meyers, T. (2004). Averaging, detrending, and filtering of eddy covariance time series. In Handbook of micrometeorology, pp. 7-31, Springer, Dordrecht, doi: \url{https://doi.org/10.1007/1-4020-2265-4_2}.
 
-Rebmann, C., Kolle, O., Heinesch, B., Queck, R., Ibrom, A., Aubinet, M. (2012). Data acquisition and flux calculations. In Eddy covariance, pp. 59-83, Springer, Dordrecht, doi: \url{https://doi.org/10.1007/978-94-007-2351-1_3}.
+Rebmann, C., Kolle, O., Heinesch, B., Queck, R., Ibrom, A., Aubinet, M. (2012). Data acquisition and flux calculations. In Eddy covariance, pp. 59-83, Springer, Dordrecht.
 
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D. (2019).
 A robust data cleaning procedure for eddy covariance flux measurements,
