@@ -83,8 +83,15 @@ FC_LGD_FLAG <- as.vector(replace(replace(replace(zero_vector, which(ec_data[,"LG
 SA_Diag0 <- zero_vector
 SA_Diag <- replace(SA_Diag0, which(ec_data[,"SADiag"]>0), 1)
 
-GA_Diag0 <- zero_vector
-GA_Diag <- apply(ec_data[,which(colnames(ec_data)=="GA_head_detect"):which(colnames(ec_data)=="GA_sync")], MARGIN=1, function(x) sum(x, na.rm=TRUE));
+#GA_Diag0 <- zero_vector
+#GA_Diag <- apply(ec_data[,which(colnames(ec_data)=="GA_head_detect"):which(colnames(ec_data)=="GA_sync")], MARGIN=1, function(x) sum(x, na.rm=TRUE));
+
+if(md_tmp[1,"GA_MODEL"]!="li7200_1") GA_Diag <- zero_vector
+if(md_tmp[1,"GA_MODEL"]=="li7200_1"){
+	GA_TCellDiag <- apply(cbind(ec_data[,"GA_t_out"], ec_data[,"GA_t_in"]), 1, function(x) min(x, na.rm=TRUE));
+	GA_DiagVar <- cbind(ec_data[,"GA_head_detect"], GA_TCellDiag, ec_data[,which(colnames(ec_data)=="GA_aux_in"):which(colnames(ec_data)=="GA_sync")]);
+	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+	}
 
 WDir2Exc_1 <- c()
 WDir2Exc_2 <- c()
@@ -293,9 +300,9 @@ H5 <- replace(H4, ST_H_SevEr, NA)
 
 if(N < 48*10) {warning(call.=FALSE, "Outlier detection procedure as described in Vitale et al (2019) is performed when data cover a period of at least 10 consecutive days")}
 	
-if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "NEE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
-if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "LE flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
-if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==N/48))) {warning(call.=FALSE, "H flux values are always missing for same half-hour! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in NEE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in LE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in H flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
 
 NEE_cleaned <- NEE5
 spike1nee <- NA
@@ -308,7 +315,7 @@ spike1h <- NA
 spike2h <- NA
 
 
-if(N >= 48*10 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48)) & all(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<N/48))){
+if(N >= 48*10 & all(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<(N/48-3))) & all(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<(N/48-3))) & all(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))<(N/48-3)))){
 	for (flux in 1:3){
 		TS <- cbind(NEE5, LE5, H5)[,flux]
 		if (flux==1) {flux_type <- "NEE"; C <- 1000}
