@@ -53,16 +53,8 @@ which(colnames(EPout)=="h2o_mole_fraction"),
 which(colnames(EPout)=="h2o_var"),
 which(colnames(EPout)=="co2_scf"),
 which(colnames(EPout)=="h2o_scf"),
-which(colnames(EPout)=="H_scf"),
-which(colnames(EPout)=="head_detect_LI-7200"),
-which(colnames(EPout)=="t_out_LI-7200"),
-which(colnames(EPout)=="t_in_LI-7200"),
-which(colnames(EPout)=="aux_in_LI-7200"),
-which(colnames(EPout)=="delta_p_LI-7200"),
-which(colnames(EPout)=="chopper_LI-7200"),
-which(colnames(EPout)=="detector_LI-7200"),
-which(colnames(EPout)=="pll_LI-7200"),
-which(colnames(EPout)=="sync_LI-7200"))
+which(colnames(EPout)=="H_scf"))
+
 
 VarSelQC <- c(
 which(colnames(EPqc)=="dev(w)")[1], ## Instationary Test
@@ -80,16 +72,39 @@ which(colnames(EPmd)=="canopy_height"),
 which(colnames(EPmd)=="master_sonic_height"),
 which(colnames(EPmd)=="master_sonic_north_offset"))
 
+############################################################################################################################################################################################################################
+#
+### IRGA Diagnostic Management
+#
+############################################################################################################################################################################################################################
+IRGA <- substr(EPmd[1,"co2_irga_model"],1,6)
+
+if(IRGA=="li7200"){
+	GA_TCellDiag <- apply(cbind(EPout[,"t_out_LI-7200"], EPout[,"t_in_LI-7200"]), 1, function(x) min(x, na.rm=TRUE));
+	GA_DiagVar <- cbind(EPout[,"head_detect_LI-7200"], GA_TCellDiag, EPout[,"aux_in_LI-7200"], EPout[,"delta_p_LI-7200"], EPout[,"chopper_LI-7200"], EPout[,"detector_LI-7200"], EPout[,"pll_LI-7200"], EPout[,"sync_LI-7200"]);
+	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+	}
+
+if(IRGA=="li7500"){
+	GA_DiagVar <- cbind(EPout[,"chopper_LI-7500"], EPout[,"detector_LI-7500"], EPout[,"pll_LI-7500"], EPout[,"sync_LI-7500"]);
+	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+	}
+
+GA_Diag.xts <- xts(GA_Diag,  order.by=timestamp_EPout)
+if (IRGA!="li7200" & IRGA!="li7500") GA_Diag.xts <- xts(rep(0, length(timestamp_EPout)), order.by=timestamp_EPout)
+
+############################################################################################################################################################################################################################
 
 EPout.xts <- xts(EPout[,VarSelOut], order.by=timestamp_EPout)
 EPqc.xts <- xts(EPqc[,VarSelQC], order.by=timestamp_EPqc)
 EPmd.xts <- xts(EPmd[,VarSelMD], order.by=timestamp_EPmd)
 QCstat.xts <- xts(QCstat[,-1], order.by=timestamp_QCstat)
 
-ecworkset.xts <- merge(EPout.xts, EPqc.xts, EPmd.xts, QCstat.xts) 
 
+ecworkset.xts <- merge(EPout.xts, GA_Diag.xts, EPqc.xts, EPmd.xts, QCstat.xts) 
 set2exp <- data.frame(format(time(ecworkset.xts),"%Y%m%d%H%M", tz="GMT"), coredata(ecworkset.xts))
-colnames(set2exp) <- c("TIMESTAMP", "DNtime", "file_records", "used_records","Stability","H", "qcH", "ruH", "LE", "qcLE", "ruLE", "CO2flux", "qcCO2flux", "ruCO2", "CO2str", "ustar", "U","W","WDir", "WSpeed", "u_var", "v_var", "w_var", "MOL", "TSonic", "AT", "AP", "rho", "cp", "ts_var", "CO2mf", "co2_var", "H2Omf", "h2o_var", "CO2scf", "H2Oscf", "Hscf", "GA_head_detect", "GA_t_out", "GA_t_in", "GA_aux_in", "GA_delta_p", "GA_chopper", "GA_detector", "GA_pll", "GA_sync", "dw","dts","dco2","dh2o","dwts","dwco2","dwh2o","itc_w", "acquisition_frequency", "canopy_height", "SA_height", "SA_NorthOffset", colnames(QCstat)[-1])
+colnames(set2exp) <- c("TIMESTAMP", "DNtime", "file_records", "used_records","Stability","H", "qcH", "ruH", "LE", "qcLE", "ruLE", "CO2flux", "qcCO2flux", "ruCO2", "CO2str", "ustar", "U","W","WDir", "WSpeed", "u_var", "v_var", "w_var", "MOL", "TSonic", "AT", "AP", "rho", "cp", "ts_var", "CO2mf", "co2_var", "H2Omf", "h2o_var", "CO2scf", "H2Oscf", "Hscf", "GADiag", "dw","dts","dco2","dh2o","dwts","dwco2","dwh2o","itc_w", "acquisition_frequency", "canopy_height", "SA_height", "SA_NorthOffset", colnames(QCstat)[-1])
+
 
 if(!is.null(path_output) & !is.null(FileName)) fwrite(set2exp, paste0(path_output, "/", FileName, ".csv"), sep=",", row.names=FALSE, col.names=TRUE, quote=FALSE, na="-9999")
 

@@ -83,15 +83,14 @@ FC_LGD_FLAG <- as.vector(replace(replace(replace(zero_vector, which(ec_data[,"LG
 SA_Diag0 <- zero_vector
 SA_Diag <- replace(SA_Diag0, which(ec_data[,"SADiag"]>0), 1)
 
-#GA_Diag0 <- zero_vector
-#GA_Diag <- apply(ec_data[,which(colnames(ec_data)=="GA_head_detect"):which(colnames(ec_data)=="GA_sync")], MARGIN=1, function(x) sum(x, na.rm=TRUE));
+GA_Diag <- ec_data[,"GADiag"]
 
-if(md_tmp[1,"GA_MODEL"]!="li7200_1") GA_Diag <- zero_vector
-if(md_tmp[1,"GA_MODEL"]=="li7200_1"){
-	GA_TCellDiag <- apply(cbind(ec_data[,"GA_t_out"], ec_data[,"GA_t_in"]), 1, function(x) min(x, na.rm=TRUE));
-	GA_DiagVar <- cbind(ec_data[,"GA_head_detect"], GA_TCellDiag, ec_data[,which(colnames(ec_data)=="GA_aux_in"):which(colnames(ec_data)=="GA_sync")]);
-	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
-	}
+#if(md_tmp[1,"GA_MODEL"]!="li7200_1") GA_Diag <- zero_vector
+#if(md_tmp[1,"GA_MODEL"]=="li7200_1"){
+#	GA_TCellDiag <- apply(cbind(ec_data[,"GA_t_out"], ec_data[,"GA_t_in"]), 1, function(x) min(x, na.rm=TRUE));
+#	GA_DiagVar <- cbind(ec_data[,"GA_head_detect"], GA_TCellDiag, ec_data[,which(colnames(ec_data)=="GA_aux_in"):which(colnames(ec_data)=="GA_sync")]);
+#	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+#	}
 
 WDir2Exc_1 <- c()
 WDir2Exc_2 <- c()

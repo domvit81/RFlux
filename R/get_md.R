@@ -1,5 +1,5 @@
 
-get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL, tlag_meth){
+get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL, tlag_meth, despike_meth=c("None", "VM97", "M13"), detrend_meth=c("BA", "LD"), tilt_correction_meth=c("DR", "PF")){
 
 dir.create(path_output, showWarnings=FALSE, recursive=TRUE)
 
@@ -490,7 +490,8 @@ if(md["GA_PATH"]=="open") "\nwpl_meth=1",
 "\nar_bins=100",
 "\nar_hf_lim=70",
 "\nar_lim=7.0",
-"\ndespike_vm=0", ## 0 VM97, 1 Mauder 2013
+if(despike_meth=="VM97") "\ndespike_vm=0", ## 0 VM97, 1 Mauder 2013
+if(despike_meth=="M13") "\ndespike_vm=1", ## 0 VM97, 1 Mauder 2013
 "\ndo_extlim_dw=10",
 "\ndo_hf1_lim=10.0",
 "\ndo_hf2_lim=6.0",
@@ -544,7 +545,8 @@ if(md["GA_PATH"]=="open") "\nwpl_meth=1",
 "\nbu_corr=0",
 "\nbu_multi=0",
 "\ncross_wind=0",
-"\ndetrend_meth=0",###0:Block Average; 1:Linear Detrending
+if(detrend_meth=="BA") "\ndetrend_meth=0",###0:Block Average; 1:Linear Detrending
+if(detrend_meth=="LD") "\ndetrend_meth=1",###0:Block Average; 1:Linear Detrending
 "\nfilter_al=1",
 "\nfilter_sr=1",
 "\nflow_distortion=-1",
@@ -629,7 +631,8 @@ if(md["GA_PATH"]=="open") "\nwpl_meth=1",
 "\nout_st_6=0",
 "\nout_st_7=0",
 "\npower_of_two=1",
-"\nrot_meth=3",### 1 Double Rotation, 3 Planar Fit
+if(tilt_correction_meth=="DR") "\nrot_meth=1",### 1 Double Rotation, 3 Planar Fit
+if(tilt_correction_meth=="PF") "\nrot_meth=3",### 1 Double Rotation, 3 Planar Fit
 "\ntap_win=3",
 "\ntimeconst=250.0",
 "\ntlag_meth=", tlag_meth, ## 0 None; 1 Costant; 2 MaxCov with default; 3 MaxCov; 4 Autom optim (time consuming)
@@ -645,7 +648,8 @@ if(md["GA_PATH"]=="open") "\nwpl_meth=1",
 "\ntest_ds=0",
 "\ntest_ns=0",
 "\ntest_sk=0",
-"\ntest_sr=1", ## SPIKE REMOVAL
+if(despike_meth=="None") "\ntest_sr=0", ## SPIKE REMOVAL
+if(despike_meth!="None") "\ntest_sr=1", ## SPIKE REMOVAL
 "\ntest_tl=0",
 "\n",
 "\n[RawProcess_TiltCorrection_Settings]",
@@ -667,7 +671,7 @@ ifelse(online==TRUE, "\npf_mode=0","\npf_mode=1"), ### 0 for NRT (with pf_file s
 "\npf_sect_3_width=90",
 "\npf_sect_4_exclude=0",
 "\npf_sect_4_width=90",
-"\npf_u_min=1.5",
+"\npf_u_min=0.5",
 "\npf_w_max=1",
 "\n",
 "\n[RawProcess_TimelagOptimization_Settings]",
