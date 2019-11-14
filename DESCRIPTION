@@ -1,7 +1,7 @@
 Package: RFlux
 Type: Package
 Title: Eddy Covariance Flux Data Processing
-Version: 1.0.1
+Version: 1.0.2
 Date: 2019-09-19
 Authors@R: 
   c(person(given = "Domenico",
