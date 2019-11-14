@@ -52,6 +52,8 @@ Quality control involves the data cleaning procedure described in Vitale et al (
 Maintainer: \packageMaintainer{RFlux}
 }
 \references{
+Fratini, G., Mauder, M. (2014). Towards a consistent eddy-covariance processing: an intercomparison of EddyPro and TK3. Atmospheric Measurement Techniques, 7(7), 2273-2281, doi: \url{https://doi.org/10.5194/amt-7-2273-2014}.
+
 Fratini, G., Ibrom, A., Arriga, N., Burba, G., Papale, D. (2012). Relative humidity effects on water vapour fluxes measured with closed-path eddy-covariance systems with short sampling lines. Agricultural and forest meteorology, 165, pp 53-63, doi: \url{https://doi.org/10.1016/j.agrformet.2012.05.018}.
 
 LI-COR Biosciences: EddyPro 7.0.4: Help and User's Guide, LI-COR Biosciences, Lincoln, Nebraska USA, \url{www.licor.com/EddyPro}, 2019.
