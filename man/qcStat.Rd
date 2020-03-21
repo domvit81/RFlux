@@ -8,13 +8,18 @@ Quality control tests for eddy covariance fluxes
 Returns the test statistics of the quality control routines described by Vitale et al (2019). 
 }
 \usage{
-qcStat(path_rawdata, path_output=NULL, FileName=NULL)
+qcStat(path_rawdata, ext_tstamp=c("START", "END"), path_output=NULL, FileName=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{path_rawdata}{
   path where raw high-frequency eddy covariance data are stored.
 }
+
+  \item{ext_tstamp}{
+  Character string specifying whether the timestamp in the file name is indicative of the beginning ("START") or the end ("END") of time series involved.
+}
+
   \item{path_output}{
   path where the results will be stored. Default is NULL.
 }
@@ -64,7 +69,7 @@ The output of \code{\link{qcStat}} constiutes one of input files required by the
 }
 \examples{
 PATH_RAWDATA <- system.file("extdata", "DE-HoH_EC_201907301200_v01.csv", package = "RFlux")
-QC_STAT <- qcStat(path_rawdata=PATH_RAWDATA, path_output=NULL, FileName=NULL)
+QC_STAT <- qcStat(path_rawdata=PATH_RAWDATA, ext_tstamp="END", path_output=NULL, FileName=NULL)
 QC_STAT
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
