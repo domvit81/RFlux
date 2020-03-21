@@ -1,7 +1,8 @@
 
-qcStat <- function(path_rawdata, path_output=NULL, FileName=NULL){
+qcStat <- function(path_rawdata, ext_tstamp=c("START", "END"), path_output=NULL, FileName=NULL){
 
-tstamp <- as.character(format(strptime(str_sub(path_rawdata, -20, -9), format="%Y%m%d%H%M", tz="GMT")-1800, "%Y%m%d%H%M", tz="GMT"))
+if(ext_tstamp=="START") tstamp <- as.character(format(strptime(str_sub(path_rawdata, -20, -9), format="%Y%m%d%H%M", tz="GMT"), "%Y%m%d%H%M", tz="GMT"))
+if(ext_tstamp=="END") tstamp <- as.character(format(strptime(str_sub(path_rawdata, -20, -9), format="%Y%m%d%H%M", tz="GMT")-1800, "%Y%m%d%H%M", tz="GMT"))
 
 ##################################################################################################################################################################################################################################################
 #	Raw Data Processing
