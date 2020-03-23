@@ -25,7 +25,7 @@ ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le 
 	{IPT_v <- inst_prob_test(raw_data$V)})
 	
 	ifelse(fmr_h > 15 | lgd_h > 180, 
-	{D0_h <- NA; lrt_h <- NA; IPT_w <- rep(NA,8); IPT_ts <- rep(NA,9); M98_h <- NA; COV_wts <- NA; SADiag <- NA}, 
+	{D0_h <- NA; lrt_h <- NA; IPT_w <- rep(NA,8); IPT_ts <- rep(NA,8); M98_h <- NA; COV_wts <- NA; SADiag <- NA}, 
 	{
 	ind_w <- which(diff(raw_data$W)==0)+1;
 	ind_ts <- which(diff(raw_data$T_SONIC)==0)+1;
