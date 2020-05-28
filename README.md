@@ -11,9 +11,9 @@ devtools::install_github("icos-etc/RFlux")
 help(package=RFlux)
 citation("RFlux")
 
-Domenico Vitale, Dario Papale and ICOS-ETC Team (2019).
-RFlux: An R Package for Processing and Cleaning Eddy Covariance Flux Measurements.
-R package version 1.0.2.
+Domenico Vitale, Dario Papale and ICOS-ETC Team (2019)
+RFlux: An R Package for Processing and Cleaning Eddy Covariance Flux Measurements
+R package version 1.0.2
 
 A BibTeX entry for LaTeX users is
 
