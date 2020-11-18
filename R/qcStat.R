@@ -14,9 +14,9 @@ ifelse(n > 19000, HZ <- 20, HZ <- 10)
 N <- max(HZ*60*30, n)
 
 ifelse(n<N, delta <- N-n, delta <- 0)
-ifelse(length(which(is.na(raw_data$W+raw_data$T_SONIC)))==n, {fmr_h <- 100; lgd_h <- 1800}, {stat_h <- statsNA(raw_data$W+raw_data$T_SONIC, printOnly=FALSE); fmr_h <- (stat_h$numberNAs+delta)/N*100; lgd_h <- max(delta, stat_h$naGapLongest,na.rm=TRUE)/HZ})
-ifelse(length(which(is.na(raw_data$W+raw_data$CO2)))==n, {fmr_fc <- 100; lgd_fc <- 1800}, {stat_fc <- statsNA(raw_data$W+raw_data$CO2, printOnly=FALSE); fmr_fc <- (stat_fc$numberNAs+delta)/N*100; lgd_fc <- max(delta, stat_fc$naGapLongest, na.rm=TRUE)/HZ})
-ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le <- 1800}, {stat_le <- statsNA(raw_data$W+raw_data$H2O, printOnly=FALSE); fmr_le <- (stat_le$numberNAs+delta)/N*100; lgd_le <- max(delta, stat_le$naGapLongest, na.rm=TRUE)/HZ})
+ifelse(length(which(is.na(raw_data$W+raw_data$T_SONIC)))==n, {fmr_h <- 100; lgd_h <- 1800}, {stat_h <- statsNA(raw_data$W+raw_data$T_SONIC, print_only=FALSE); fmr_h <- (stat_h$number_NAs+delta)/N*100; lgd_h <- max(delta, stat_h$longest_na_gap,na.rm=TRUE)/HZ})
+ifelse(length(which(is.na(raw_data$W+raw_data$CO2)))==n, {fmr_fc <- 100; lgd_fc <- 1800}, {stat_fc <- statsNA(raw_data$W+raw_data$CO2, print_only=FALSE); fmr_fc <- (stat_fc$number_NAs+delta)/N*100; lgd_fc <- max(delta, stat_fc$longest_na_gap, na.rm=TRUE)/HZ})
+ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le <- 1800}, {stat_le <- statsNA(raw_data$W+raw_data$H2O, print_only=FALSE); fmr_le <- (stat_le$number_NAs+delta)/N*100; lgd_le <- max(delta, stat_le$longest_na_gap, na.rm=TRUE)/HZ})
 
 
 	L <- 25 ## lag max for LSR test
