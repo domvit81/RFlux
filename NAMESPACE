@@ -1,29 +1,35 @@
 ##exportPattern("^[[:alpha:]]+")
 
  export(cleanFlux,
+	despiking,
 	ecworkset,
 	eddypro_run,
 	get_md,
 	inst_prob_test,
 	mahrt,
-	qcStat)
+	parallel_despiking,
+	qcStat,
+	tlag_detection)
 	
 import(utils)
 import(bit64)
 
 
-importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "quantile", "time", "ts", "window")
+importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "quantile", "time", "ts", "window", "rnorm", "as.ts", "ar.ols")
 importFrom("utils", "write.table")
-importFrom("data.table", "fread", "fwrite")
+importFrom("data.table", "fread", "fwrite", "shift")
 importFrom("xts", "xts")
 importFrom("stlplus", "stlplus")
 importFrom("alphaOutlier", "aout.laplace")
 importFrom("robustbase", "Qn")
+importFrom("robfilter", "rm.filter", "hybrid.filter")
+importFrom("future.apply", "future_apply")
 importFrom("egcm", "detrend")
 importFrom("timeDate", "kurtosis", "skewness")
 importFrom("imputeTS", "statsNA")
 importFrom("stringr", "str_sub")
-importFrom("zoo", "rollapply", "coredata", "na.approx")
+importFrom("zoo", "rollapply", "coredata", "na.approx", "na.locf")
 importFrom("grDevices", "dev.off", "jpeg")
-importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points")
+importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points", "abline", "lines")
 importFrom("car", "Boxplot")
+importFrom("future.apply", "future_apply")
