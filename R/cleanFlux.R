@@ -65,6 +65,13 @@ NEE_raw <- as.vector(ec_data[,"CO2flux"])
 LE_raw <- as.vector(ec_data[,"LE"])
 H_raw <- as.vector(ec_data[,"H"])
 
+OoR_NEE_index <- c(which(NEE_raw > 70), which(NEE_raw < -100))
+OoR_LE_index <- c(which(LE_raw > 1000), which(LE_raw < -300))
+OoR_H_index <- c(which(H_raw > 1000), which(H_raw < -300))
+OoR_NEE <- replace(zero_vector, OoR_NEE_index, 2)
+OoR_LE <- replace(zero_vector, OoR_LE_index, 2)
+OoR_H <- replace(zero_vector, OoR_H_index, 2)
+
 H_FMR_STAT <- replace(ec_data[,"FMR_H"], which(is.na(ec_data[,"FMR_H"])), 100)
 H_FMR_FLAG <- as.vector(replace(replace(replace(zero_vector, which(ec_data[,"FMR_H"]>=5),1), which(ec_data[,"FMR_H"]>15),2), which(is.na(H_raw)), 2))
 H_LGD_STAT <- replace(ec_data[,"LGD_H"], which(is.na(ec_data[,"LGD_H"])), 1800)
@@ -118,9 +125,9 @@ WDir2Exc <- union(union(WDir2Exc_1,WDir2Exc_2),WDir2Exc_3)
 length(WDir2Exc)
 
 
-INT_NEE_SevEr <- union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(FC_FMR_FLAG==2), which(FC_LGD_FLAG==2)))
-INT_LE_SevEr <- union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(LE_FMR_FLAG==2), which(LE_LGD_FLAG==2)))
-INT_H_SevEr <-  union(union(WDir2Exc,which(SA_Diag!=0)), union(which(H_FMR_FLAG==2), which(H_LGD_FLAG==2)))
+INT_NEE_SevEr <- union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(FC_FMR_FLAG==2), which(FC_LGD_FLAG==2))), OoR_NEE_index)
+INT_LE_SevEr <- union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(LE_FMR_FLAG==2), which(LE_LGD_FLAG==2))), OoR_LE_index)
+INT_H_SevEr <-  union(union(union(WDir2Exc,which(SA_Diag!=0)), union(which(H_FMR_FLAG==2), which(H_LGD_FLAG==2))), OoR_H_index)
 
 INT_NEE_ModEr <- union(which(FC_FMR_FLAG==1), which(FC_LGD_FLAG==1))
 INT_LE_ModEr <- union(which(LE_FMR_FLAG==1), which(LE_LGD_FLAG==1))
@@ -397,7 +404,7 @@ if (plotQC==TRUE) {
 	box(lwd=1.5)
 	plot(1:N, NEE3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
 	axis(2,  seq(-100,50,step))
-	mtext(side=2, expression(NEE~~(mu*mol~~CO[2]~~m^-2~s^-1)), las=0, cex=2.5, line=4);
+	mtext(side=2, expression(NEE~~(mu*mol~~CO[2]~~m^2~s^-1)), las=0, cex=2.5, line=4);
 	legend("topright", paste(round(length(which(is.na(NEE3)))/N*100,1), "% of missing data after Structural Changes Tests", sep=""), bty="n", cex=1.5, text.col=1)
 	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.6)
 	box(lwd=1.5)
@@ -436,7 +443,7 @@ if (plotQC==TRUE) {
 	points(1:N, replace(NEE_raw, which(NEE_SevEr_flag==1), NA), pch=19, cex=.25)
 	axis(2,  seq(-100,70,step))
 	legend("bottomright", paste(round(length(which(is.na(NEE5)))/N*100,1), "% of missing data after rejection of fluxes affected by SevEr", sep=""), bty="n", cex=2, text.col=1) 
-	mtext(side=2, expression(NEE~~~(mu*mol~~CO[2]~~m^-2~s^-1)), las=0, cex=7, line=4)
+	mtext(side=2, expression(NEE~~~(mu*mol~~CO[2]~~m^2~s^-1)), las=0, cex=7, line=4)
 	plot(1:N, NEE_cleaned, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
 	points(1:N, NEE_cleaned, pch=19, cex=.25)
 	axis(2,  seq(-100,70,step))
@@ -471,7 +478,7 @@ if (plotQC==TRUE) {
 	box(lwd=1.5)
 	plot(1:N, LE3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
 	axis(2,  seq(-250,1000,step))
-	mtext(side=2, expression(LE~~(W~~m^-2)), las=0, cex=2.5, line=4.15, adj=0.1)
+	mtext(side=2, expression(LE~~(W~~m^2)), las=0, cex=2.5, line=4.15, adj=0.1)
 	legend("topright", paste(round(length(which(is.na(LE3)))/N*100,1), "% of missing data after Structural Changes Tests",  sep=""), bty="n", cex=1.5, text.col=1) 
 	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.5)
 	box(lwd=1.5)
@@ -535,7 +542,7 @@ if (plotQC==TRUE) {
 	box(lwd=1.5)
 	plot(1:N, H3, type="l", xaxt="n", ylab="", xlab="", yaxt="n", main=NULL, ylim=YLIM)
 	axis(2,  seq(-250,1000,step))
-	mtext(side=2, expression(H~~(W~~m^-2)), las=0, cex=2.5, line=4.5, adj=0.1)
+	mtext(side=2, expression(H~~(W~~m^2)), las=0, cex=2.5, line=4.5, adj=0.1)
 	legend("topright", paste(round(length(which(is.na(H3)))/N*100,1), "% of missing data after Structural Changes Tests", sep=""), bty="n", cex=1.5, text.col=1) 
 	mtext(side=4, "(d)", cex=2.5, bty="n", font=2, line=.5)
 	box(lwd=1.5)
@@ -613,6 +620,10 @@ set2exp <- data.frame(
 "H_OUTLYING_FLAG" = as.vector(replace(replace(zero_vector,spike1h,1), h_ind_miss, NA)),
 "LE_OUTLYING_FLAG" = as.vector(replace(replace(zero_vector,spike1le,1), le_ind_miss, NA)),
 "NEE_OUTLYING_FLAG" = as.vector(replace(replace(zero_vector,spike1nee,1), nee_ind_miss, NA)),
+
+"OoR_NEE_FLAG" = as.vector(OoR_NEE), 
+"OoR_LE_FLAG" = as.vector(OoR_LE), 
+"OoR_H_FLAG" = as.vector(OoR_H), 
 
 "H_FMR_STAT" = round(as.vector(H_FMR_STAT),1),
 "H_FMR_FLAG" = H_FMR_FLAG,
