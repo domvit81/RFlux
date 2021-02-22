@@ -621,9 +621,9 @@ set2exp <- data.frame(
 "LE_OUTLYING_FLAG" = as.vector(replace(replace(zero_vector,spike1le,1), le_ind_miss, NA)),
 "NEE_OUTLYING_FLAG" = as.vector(replace(replace(zero_vector,spike1nee,1), nee_ind_miss, NA)),
 
-"OoR_NEE_FLAG" = as.vector(OoR_NEE), 
-"OoR_LE_FLAG" = as.vector(OoR_LE), 
-"OoR_H_FLAG" = as.vector(OoR_H), 
+"NEE_OOR_FLAG" = as.vector(OoR_NEE), 
+"LE_OOR_FLAG" = as.vector(OoR_LE), 
+"H_OOR_FLAG" = as.vector(OoR_H), 
 
 "H_FMR_STAT" = round(as.vector(H_FMR_STAT),1),
 "H_FMR_FLAG" = H_FMR_FLAG,
