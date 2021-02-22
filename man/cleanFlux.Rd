@@ -61,6 +61,9 @@ Returns a dataframe containing:
 \item{H_OUTLYING_FLAG}{Flag for H denoting outliers (0: no outlying flux; 1: outlying flux).}
 \item{LE_OUTLYING_FLAG}{Flag for LE denoting outliers (0: no outlying flux; 1: outlying flux).}
 \item{NEE_OUTLYING_FLAG}{Flag for NEE denoting outliers (0: no outlying flux; 1: outlying flux).}
+\item{H_OOR_FLAG}{Flag for H denoting values out of the physically plausible range (0: within the range; 2: out of range).}
+\item{LE_OOR_FLAG}{Flag for LE denoting values out of the physically plausible range (0: within the range; 2: out of range).}
+\item{NEE_OOR_FLAG}{Flag for NEE denoting values out of the physically plausible range (0: within the range; 2: out of range).}
 \item{H_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for H flux estimation.}
 \item{H_FMR_FLAG}{Flag for the FMR test for H (0: negligible evidences of error, IF FMR<5; 1: moderate evidences of error, 1 IF 5\eqn{\le}FMR\eqn{\le}15; 2: severe evidences of error, 2 IF FMR>15).}
 \item{H_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for H flux estimation.}
