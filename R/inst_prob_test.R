@@ -18,5 +18,5 @@ KID1 <- as.numeric(3+kurtosis(diff(na.omit(x_r)), na.rm=TRUE))
 
 ifelse((length(na.omit(d1)) > 1000),{sigma_d <- max(0.01, Qn(na.omit(d1))); n_spike3 <- length(which(abs(d0)>5*sigma_d)); n_spike4 <- length(which(abs(d0)>10*sigma_d))}, {n_spike3 <- NA; n_spike4 <- NA})
 
-return(list("Skew"= S_VM97, "Kurt"=K_VM97, "KID0"=KID0, "KID1"=KID1, "HF4"=n_spike1, "HF1"=n_spike2, "HD4"=n_spike3, "HD1"=n_spike4))
+return(list("Skew"= S_VM97, "Kurt"=K_VM97, "KID0"=KID0, "KID1"=KID1, "HF5"=n_spike1, "HF1"=n_spike2, "HD5"=n_spike3, "HD1"=n_spike4))
 }
