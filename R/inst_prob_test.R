@@ -1,6 +1,7 @@
 
 inst_prob_test <- function(x){
 
+ifelse(length(x)>20000, nl <- 36000, nl <- 18000)
 flucts <- x - mean(x, na.rm=TRUE)
 sigma_f <- max(0.01, Qn(na.omit(flucts)))
 n_spike1 <- length(which(abs(flucts)>5*sigma_f))
@@ -16,7 +17,10 @@ S_VM97 <- as.numeric(skewness(detrend(na.omit(x)), na.rm=TRUE))
 KID0 <- as.numeric(3+kurtosis(d0, na.rm=TRUE))
 KID1 <- as.numeric(3+kurtosis(diff(na.omit(x_r)), na.rm=TRUE))
 
+ifelse(is.numeric(x) & min(x, na.rm=TRUE)!=max(x, na.rm=TRUE), ACF <- acf(x, na.action=na.pass, plot=FALSE)$acf[2], ACF <- NA)
+ifelse(is.numeric(x) & min(x, na.rm=TRUE)!=max(x, na.rm=TRUE), {QNT <- quantile(x, c(0,0.01,0.99,1), na.rm=TRUE); DDI <- max(hist(x, breaks=c(QNT[1], seq(QNT[2], QNT[3], (QNT[3]-QNT[2])/(nl/20)), QNT[4]), plot=FALSE)$counts)}, DDI <- nl) 
+
 ifelse((length(na.omit(d1)) > 1000),{sigma_d <- max(0.01, Qn(na.omit(d1))); n_spike3 <- length(which(abs(d0)>5*sigma_d)); n_spike4 <- length(which(abs(d0)>10*sigma_d))}, {n_spike3 <- NA; n_spike4 <- NA})
 
-return(list("Skew"= S_VM97, "Kurt"=K_VM97, "KID0"=KID0, "KID1"=KID1, "HF5"=n_spike1, "HF10"=n_spike2, "HD5"=n_spike3, "HD10"=n_spike4))
+return(list("Skew"= S_VM97, "Kurt"=K_VM97, "KID0"=KID0, "KID1"=KID1, "HF5"=n_spike1, "HF10"=n_spike2, "HD5"=n_spike3, "HD10"=n_spike4, "ACF"=ACF, "DDI"=DDI))
 }

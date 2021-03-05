@@ -21,11 +21,11 @@ ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le 
 
 	L <- 25 ## lag max for LSR test
 	ifelse(is.null(raw_data$V) | length(which(is.na(raw_data$V)))>N*0.95, 
-	{IPT_v <- rep(NA,8)},
+	{IPT_v <- rep(NA,10)},
 	{IPT_v <- inst_prob_test(raw_data$V)})
 	
 	ifelse(fmr_h > 15 | lgd_h > 180, 
-	{D0_h <- NA; lrt_h <- NA; IPT_w <- rep(NA,8); IPT_ts <- rep(NA,8); M98_h <- NA; COV_wts <- NA; SADiag <- NA}, 
+	{D0_h <- NA; lrt_h <- NA; IPT_w <- rep(NA,10); IPT_ts <- rep(NA,10); M98_h <- NA; COV_wts <- NA; SADiag <- NA}, 
 	{
 	ind_w <- which(diff(raw_data$W)==0)+1;
 	ind_ts <- which(diff(raw_data$T_SONIC)==0)+1;
@@ -44,7 +44,7 @@ ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le 
 	})
 
 	ifelse(fmr_fc > 15 | lgd_fc > 180,
-	{D0_fc <- NA; lrt_fc <- NA; IPT_co2 <- rep(NA,8); M98_fc <- NA; COV_wco2 <- NA}, 
+	{D0_fc <- NA; lrt_fc <- NA; IPT_co2 <- rep(NA,10); M98_fc <- NA; COV_wco2 <- NA}, 
 	{
 	ind_w <- which(diff(raw_data$W)==0)+1;
 	ind_co2 <- which(diff(raw_data$CO2)==0)+1;
@@ -61,7 +61,7 @@ ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le 
 	})
 
 	ifelse(fmr_le > 15 | lgd_le > 180,
-	{D0_le <- NA; lrt_le <- NA; IPT_h2o <- rep(NA,8); M98_le <- NA; COV_wh2o <- NA}, 
+	{D0_le <- NA; lrt_le <- NA; IPT_h2o <- rep(NA,10); M98_le <- NA; COV_wh2o <- NA}, 
 	{
 	ind_w <- which(diff(raw_data$W)==0)+1;
 	ind_h2o <- which(diff(raw_data$H2O)==0)+1;
@@ -86,11 +86,11 @@ ifelse(length(which(is.na(raw_data$W+raw_data$H2O)))==n, {fmr_le <- 100; lgd_le 
 	IPT_h2o, COV_wh2o, D0_le, lrt_le, M98_le), use.names=FALSE)
 
 	names(results) <- c("TSTAMP", "SADiag", "FMR_H", "LGD_H", "FMR_Fc", "LGD_Fc", "FMR_LE", "LGD_LE", 
-						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10"),"_v",sep=""),
-						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10"),"_w",sep=""),
-						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10"),"_ts",sep=""), "COV_wts", "N0_H", "LSR_H", "M98_H",
-						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10"),"_co2",sep=""), "COV_wco2", "N0_Fc", "LSR_Fc", "M98_Fc",
-						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10"),"_h2o",sep=""), "COV_wh2o", "N0_LE", "LSR_LE", "M98_LE")
+						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10", "ACF", "DDI"),"_v",sep=""),
+						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10", "ACF", "DDI"),"_w",sep=""),
+						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10", "ACF", "DDI"),"_ts",sep=""), "COV_wts", "N0_H", "LSR_H", "M98_H",
+						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10", "ACF", "DDI"),"_co2",sep=""), "COV_wco2", "N0_Fc", "LSR_Fc", "M98_Fc",
+						paste(c("Skew", "Kurt", "KID0", "KID1", "HF5",  "HF10",  "HD5", "HD10", "ACF", "DDI"),"_h2o",sep=""), "COV_wh2o", "N0_LE", "LSR_LE", "M98_LE")
 
 if(!is.null(path_output) & !is.null(FileName)) write.table(t(results), paste0(path_output, "/", FileName,".csv"), quote=FALSE, sep=",", row.names=FALSE)
 	
