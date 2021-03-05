@@ -43,6 +43,8 @@ A data frame containing:
 \item{HF10_X}{Statistic of the homogeneity test applied on X variable fluctuations (percentage of data exceeding \eqn{+/- 10\sigma}).}
 \item{HD5_X}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{+/- 5\sigma}).}
 \item{HD10_X}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{+/- 10\sigma}).}
+\item{ACF_X}{Autocorrelation at lag 1.}
+\item{DDI_X}{Maximum number of binned data points (number of bins proportional to the sample size).}
 \item{COV_XY}{Covariance between X and Y variables.}
 \item{N0_X}{Number of repeated consecutive values affecting X flux variable.}
 \item{LSR_X}{Statistic of the Low Signal Resolution test for X flux variable.}
@@ -53,7 +55,7 @@ Mahrt L (1998) Flux sampling errors for aircraft and towers, J. Atmos. Ocean. Te
 
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D.
 A robust data cleaning procedure for eddy covariance flux measurements,
-Biogeosciences Discussions, 2019, pp 1-36, doi: \url{https://doi.org/10.5194/bg-2019-270}.
+Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 }
 \author{
 Domenico Vitale
