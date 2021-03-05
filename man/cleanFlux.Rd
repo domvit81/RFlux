@@ -61,9 +61,9 @@ Returns a dataframe containing:
 \item{H_OUTLYING_FLAG}{Flag for H denoting outliers (0: no outlying flux; 1: outlying flux).}
 \item{LE_OUTLYING_FLAG}{Flag for LE denoting outliers (0: no outlying flux; 1: outlying flux).}
 \item{NEE_OUTLYING_FLAG}{Flag for NEE denoting outliers (0: no outlying flux; 1: outlying flux).}
-\item{H_OOR_FLAG}{Flag for H denoting values out of the physically plausible range (0: within the range; 2: out of range).}
-\item{LE_OOR_FLAG}{Flag for LE denoting values out of the physically plausible range (0: within the range; 2: out of range).}
-\item{NEE_OOR_FLAG}{Flag for NEE denoting values out of the physically plausible range (0: within the range; 2: out of range).}
+\item{H_OOR_FLAG}{Flag for H denoting values out of the physically plausible range (0: within range; 2: out of range).}
+\item{LE_OOR_FLAG}{Flag for LE denoting values out of the physically plausible range (0: within range; 2: out of range).}
+\item{NEE_OOR_FLAG}{Flag for NEE denoting values out of the physically plausible range (0: within range; 2: out of range).}
 \item{H_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for H flux estimation.}
 \item{H_FMR_FLAG}{Flag for the FMR test for H (0: negligible evidences of error, IF FMR<5; 1: moderate evidences of error, 1 IF 5\eqn{\le}FMR\eqn{\le}15; 2: severe evidences of error, 2 IF FMR>15).}
 \item{H_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for H flux estimation.}
@@ -94,6 +94,10 @@ Returns a dataframe containing:
 \item{W_HD5_FLAG}{Flag for the homogeneity test applied on differenced vertical wind velocity (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
 \item{W_HD10_STAT}{Statistic of the homogeneity test applied on differenced vertical wind velocity (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
 \item{W_HD10_FLAG}{Flag for the homogeneity test applied on differenced vertical wind velocity (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{W_ACF_STAT}{Autocorrelation at lag 1 for vertical wind velocity.}
+\item{W_ACF_FLAG}{Flag for the autocorrelation at lag 1 for vertical wind velocity (0: negligible evidences of error, IF W_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<W_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF W_ACF_STAT\eqn{\le}0.5).}
+\item{W_DDI_STAT}{Maximum number of binned data points for vertical wind velocity (number of bins proportional to the sample size).}
+\item{W_DDI_FLAG}{Flag for the W_DDI_STAT (0: negligible evidences of error, IF W_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5\le}W_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF W_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
 \item{T_SONIC_HF5_STAT}{Statistic of the homogeneity test applied on sonic temperature fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
 \item{T_SONIC_HF5_FLAG}{Flag for the homogeneity test applied on sonic temperature fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
 \item{T_SONIC_HF10_STAT}{Statistic of the homogeneity test applied on sonic temperature fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
@@ -102,6 +106,10 @@ Returns a dataframe containing:
 \item{T_SONIC_HD5_FLAG}{Flag for the homogeneity test applied on differenced sonic temperature (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
 \item{T_SONIC_HD10_STAT}{Statistic of the homogeneity test applied on differenced sonic temperature (percentage of data exceeding \eqn{\mu+/-10\sigma}).} 
 \item{T_SONIC_HD10_FLAG}{Flag for the homogeneity test applied on differenced sonic temperature (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{T_SONIC_ACF_STAT}{Autocorrelation at lag 1 for sonic temperature.}
+\item{T_SONIC_ACF_FLAG}{Flag for the autocorrelation at lag 1 for sonic temperature (0: negligible evidences of error, IF T_SONIC_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<T_SONIC_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF T_SONIC_ACF_STAT\eqn{\le}0.5).}
+\item{T_SONIC_DDI_STAT}{Maximum number of binned data points for sonic temperature (number of bins proportional to the sample size).}
+\item{T_SONIC_DDI_FLAG}{Flag for the T_SONIC_DDI_STAT (0: negligible evidences of error, IF T_SPNIC_DDI_STAT<\eqn{hz*60*2.5}; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}T_SONIC_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF T_SONIC_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
 \item{H2O_HF5_STAT}{Statistic of the homogeneity test applied on water vapor fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
 \item{H2O_HF5_FLAG}{Flag for the homogeneity test applied on water vapor fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
 \item{H2O_HF10_STAT}{Statistic of the homogeneity test applied on water vapor fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
@@ -110,6 +118,10 @@ Returns a dataframe containing:
 \item{H2O_HD5_FLAG}{Flag for the homogeneity test applied on differenced water vapor (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
 \item{H2O_HD10_STAT}{Statistic of the homogeneity test applied on differenced water vapor (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
 \item{H2O_HD10_FLAG}{Flag for the homogeneity test applied on differenced water vapor (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{H2O_ACF_STAT}{Autocorrelation at lag 1 for water vapor.}
+\item{H2O_ACF_FLAG}{Flag for the autocorrelation at lag 1 for water vapor (0: negligible evidences of error, IF H2O_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<H2O_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF H2O_ACF_STAT\eqn{\le}0.5).}
+\item{H2O_DDI_STAT}{Maximum number of binned data points for water vapor (number of bins proportional to the sample size).}
+\item{H2O_DDI_FLAG}{Flag for the H2O_DDI_STAT (0: negligible evidences of error, IF H2O_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}H2O_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF H2O_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
 \item{CO2_HF5_STAT}{Statistic of the homogeneity test applied on carbon dioxide fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
 \item{CO2_HF5_FLAG}{Flag for the homogeneity test applied on carbon dioxide fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
 \item{CO2_HF10_STAT}{Statistic of the homogeneity test applied on carbon dioxide fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
@@ -118,6 +130,10 @@ Returns a dataframe containing:
 \item{CO2_HD5_FLAG}{Flag for the homogeneity test applied on differenced carbon dioxide (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
 \item{CO2_HD10_STAT}{Statistic of the homogeneity test applied on differenced carbon dioxide (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
 \item{CO2_HD10_FLAG}{Flag for the homogeneity test applied on differenced carbon dioxide (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{CO2_ACF_STAT}{Autocorrelation at lag 1 for carbon dioxide.}
+\item{CO2_ACF_FLAG}{Flag for the autocorrelation at lag 1 for carbon dioxide (0: negligible evidences of error, IF CO2_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<CO2_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF CO2_ACF_STAT\eqn{\le}0.5).}
+\item{CO2_DDI_STAT}{Maximum number of binned data points for carbon dioxide (number of bins proportional to the sample size).}
+\item{CO2_DDI_FLAG}{Flag for the CO2_DDI_STAT (0: negligible evidences of error, IF CO2_DDI_STAT<\eqn{hz*60*2.5}; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}CO2_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF CO2_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
 \item{W_KID_STAT}{Kurtosis Index of Differenced vertical wind velocity.}
 \item{W_KID_FLAG}{Flag for the W_KID_STAT (0: negligible evidences of error, IF KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}KID_STAT\eqn{\le}50; 2: severe evidences of error, IF KID_STAT>50).}
 \item{T_SONIC_KID_STAT}{Kurtosis Index of Differenced sonic temperature.}
@@ -169,7 +185,7 @@ Returns a dataframe containing:
 %% ~put references to the literature/web site here ~
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D.
 A robust data cleaning procedure for eddy covariance flux measurements,
-Biogeosciences Discussions, 2019, pp 1-36, doi: \url{https://doi.org/10.5194/bg-2019-270}.
+Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 }
 
 \author{
