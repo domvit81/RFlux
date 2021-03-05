@@ -26,11 +26,13 @@ inst_prob_test(x)
   \item{KID1}{Kurtosis index on difference data excluding low resolution problems.}
   \item{HFx}{Homogeneity test statistic based on fluctuation.}
   \item{HDx}{Homogeneity test statistic based on difference data.}
+  \item{ACF}{Autocorrelation at lag 1.}
+  \item{DDI}{Maximum number of binned data points (number of bins proportional to the sample size).}
 }
 \references{
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D.
 A robust data cleaning procedure for eddy covariance flux measurements,
-Biogeosciences Discussions, 2019, pp 1-36, doi: \url{https://doi.org/10.5194/bg-2019-270}.
+Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 }
 \author{
 Domenico Vitale
