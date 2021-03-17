@@ -14,10 +14,10 @@ reg_ts <- xts(rep(1, length(reg_timestamp)), order.by=reg_timestamp)
 
 ## Building time series of wind sector to exclude
 md_tmp <- fread(path_ecmd, integer64="numeric", data.table=FALSE, na.strings=c(NA, "-9999"))
-md_tmp0 <- rbind(md_tmp, replace(md_tmp[nrow(md_tmp),], 2, as.character(format(Sys.time(), "%Y%m%d%H", tz="GMT"))), make.row.names=FALSE)
+md_tmp0 <- rbind(md_tmp, replace(md_tmp[nrow(md_tmp),], 2, as.character(format(round_date(Sys.time(), "30 minutes")+60, "%Y%m%d%H%M", tz="GMT"))), make.row.names=FALSE)
 site <- md_tmp[1,"SITEID"]
 
-time_S <- as.POSIXct("2000010100", format="%Y%m%d%H", tz="GMT")
+time_S <- as.POSIXct("200001010000", format="%Y%m%d%H%M", tz="GMT")
 WS2E_c1 <- c()
 WS2E_w1 <- c()
 WS2E_c2 <- c()
@@ -25,9 +25,19 @@ WS2E_w2 <- c()
 WS2E_c3 <- c()
 WS2E_w3 <- c()
 
-
 for (i in 1:(nrow(md_tmp0)-1)){
-	time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,8), format="%Y%m%d", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,8), format="%Y%m%d", tz="GMT")-1800, by="30 min")
+	if(nchar(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]))==12 & nchar(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]))==12){
+			time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,12), format="%Y%m%d%H%M", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,12), format="%Y%m%d%H%M", tz="GMT")-60, by="1 min")
+		}  
+	if(nchar(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]))==12 & nchar(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]))==8){
+			time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,12), format="%Y%m%d%H%M", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,8), format="%Y%m%d", tz="GMT")-60, by="1 min")
+		}  
+	if(nchar(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]))==8 & nchar(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]))==12){
+			time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,8), format="%Y%m%d", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,12), format="%Y%m%d%H%M", tz="GMT")-60, by="1 min")
+		}  
+	if(nchar(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]))==8 & nchar(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]))==8){
+			time_S0 <- seq(strptime(substr(as.character(md_tmp0[i,"DATE_OF_VARIATION_EF"]),1,8), format="%Y%m%d", tz="GMT"), strptime(substr(as.character(md_tmp0[i+1,"DATE_OF_VARIATION_EF"]), 1,8), format="%Y%m%d", tz="GMT")-60, by="1 min")
+		}  
 	time_S <- c(time_S, time_S0)
 	WS2E_c0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_c1"], length(time_S0))
 	WS2E_w0 <- rep(md_tmp0[i,"SA_INVALID_WIND_SECTOR_w1"], length(time_S0))
@@ -43,7 +53,24 @@ for (i in 1:(nrow(md_tmp0)-1)){
 	WS2E_w3 <- c(WS2E_w3, WS2E_w0)
 	}
 
-windsect2excl.xts <- xts(cbind(WS2E_c1, WS2E_w1, WS2E_c2, WS2E_w2, WS2E_c3, WS2E_w3), order.by=time_S[-1])
+WS2E_c1.min <- xts(WS2E_c1, order.by=time_S[-1])
+WS2E_w1.min <- xts(WS2E_w1, order.by=time_S[-1])
+WS2E_c2.min <- xts(WS2E_c2, order.by=time_S[-1])
+WS2E_w2.min <- xts(WS2E_w2, order.by=time_S[-1])
+WS2E_c3.min <- xts(WS2E_c3, order.by=time_S[-1])
+WS2E_w3.min <- xts(WS2E_w3, order.by=time_S[-1])
+
+WS2E_c1.hh <- period.apply(WS2E_c1.min , endpoints(WS2E_c1.min , "mins", 30), function(x) mode(x))
+WS2E_w1.hh <- period.apply(WS2E_w1.min , endpoints(WS2E_w1.min , "mins", 30), function(x) mode(x))
+WS2E_c2.hh <- period.apply(WS2E_c2.min , endpoints(WS2E_c2.min , "mins", 30), function(x) mode(x))
+WS2E_w2.hh <- period.apply(WS2E_w2.min , endpoints(WS2E_w2.min , "mins", 30), function(x) mode(x))
+WS2E_c3.hh <- period.apply(WS2E_c3.min , endpoints(WS2E_c3.min , "mins", 30), function(x) mode(x))
+WS2E_w3.hh <- period.apply(WS2E_w3.min , endpoints(WS2E_w3.min , "mins", 30), function(x) mode(x))
+
+hh_timestep <- round_date(time(WS2E_c1.hh), "30 minutes")
+
+windsect2excl.xts <- xts(cbind(as.vector(WS2E_c1.hh), as.vector(WS2E_w1.hh), as.vector(WS2E_c2.hh), as.vector(WS2E_w2.hh), as.vector(WS2E_c3.hh), as.vector(WS2E_w3.hh)), order.by=hh_timestep)
+colnames(windsect2excl.xts) <- c("WS2E_c1","WS2E_w1","WS2E_c2","WS2E_w2","WS2E_c3","WS2E_w3")
 wind_sector_exclusion.xts <- window(windsect2excl.xts, start=t_start, end=t_end) 
 
 ec_data <- merge(reg_ts, ec_data0.xts, wind_sector_exclusion.xts, tzone="GMT")[,-1]
