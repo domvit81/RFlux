@@ -9,7 +9,8 @@
 	mahrt,
 	parallel_despiking,
 	qcStat,
-	tlag_detection)
+	tlag_detection,
+	mode)
 	
 import(utils)
 import(bit64)
@@ -18,7 +19,7 @@ import(bit64)
 importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "quantile", "time", "ts", "window", "rnorm", "as.ts", "ar.ols", "acf")
 importFrom("utils", "write.table")
 importFrom("data.table", "fread", "fwrite", "shift")
-importFrom("xts", "xts")
+importFrom("xts", "xts", "period.apply", "endpoints")
 importFrom("stlplus", "stlplus")
 importFrom("alphaOutlier", "aout.laplace")
 importFrom("robustbase", "Qn")
@@ -33,3 +34,5 @@ importFrom("grDevices", "dev.off", "jpeg")
 importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points", "abline", "lines", "hist")
 importFrom("car", "Boxplot")
 importFrom("future.apply", "future_apply")
+importFrom("lubridate", "round_date")
+
