@@ -357,9 +357,9 @@ H5 <- replace(H4, ST_H_SevEr, NA)
 
 if(N < 48*10) {warning(call.=FALSE, "Outlier detection procedure as described in Vitale et al (2019) is performed when data cover a period of at least 10 consecutive days")}
 	
-if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in NEE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
-if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in LE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
-if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))==(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in H flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(NEE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))>=(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in NEE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(LE5, nrow=48), MARGIN=1, function(x) sum(is.na(x))>=(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in LE flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
+if(any(apply(matrix(H5, nrow=48), MARGIN=1, function(x) sum(is.na(x))>=(N/48-3)))) {warning(call.=FALSE, "Too missing values for some half-hour in H flux variables! Outlier detection procedure described in Vitale et al (2019) is not performed")}
 
 NEE_cleaned <- NEE5
 spike1nee <- NA
