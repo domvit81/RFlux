@@ -30,6 +30,7 @@ despiking <- function(x, mfreq, variant, wsignal, wscale, wby=1, zth=5, alpha=0.
 				}
 			}
 		}
+		return(list("ts_cleaned"=replace(x, spike_index, NA), "spike_loc"=spike_index))	
 	}
 	
 	if(variant=="v2"){ ## mainly for meteo time series
@@ -56,31 +57,38 @@ despiking <- function(x, mfreq, variant, wsignal, wscale, wby=1, zth=5, alpha=0.
 					}
 				}
 			}
-		}
-
-	if(variant=="v3"){ ## mainly for EC raw data
-		TS <- na.locf(na.locf(x, na.rm=FALSE), fromLast=TRUE)
-		x_raw <- TS + rnorm(N, 0, abs(0.0001*TS))
-		
-		mod0 <- rm.filter(x_raw, width=wsignal)
-		
-		ifelse(length(which(is.na(mod0$level$RM))) > 1, 
-			{res0 <- c(NA, diff(x_raw));
-			lbound <- Qn(res0);
-			v00 <- na.locf(na.locf(na.approx(rollapply(res0, width=wscale, by=wby, function(x) Qn(x), fill=NA), na.rm=FALSE), na.rm=FALSE), fromLast=TRUE);
-			v0 <- replace(v00, which(v00 < lbound), lbound);
-			spike_index <- which(abs(res0) > zth*v0);
-			n_spike <- length(spike_index);
-			x_cl <- na.locf(na.locf(replace(x_raw, spike_index, NA), na.rm=FALSE), fromLast=TRUE)
-			},
-			{res0 <- TS - mod0$level$RM;
-			lbound <- Qn(res0);
-			v00 <- na.locf(na.locf(na.approx(rollapply(res0, width=wscale, by=wby, function(x) Qn(x), fill=NA), na.rm=FALSE), na.rm=FALSE), fromLast=TRUE);
-			v0 <- replace(v00, which(v00 < lbound), lbound)
-			spike_index <- which(abs(res0) > zth*v0);
-			n_spike <- length(spike_index);
-			x_cl <- na.locf(na.locf(replace(TS, spike_index, NA), na.rm=FALSE), fromLast=TRUE)
-			}) ## per preservare sudden shift in media non usiamo approssimazioni lineari
+		return(list("ts_cleaned"=replace(x, spike_index, NA), "spike_loc"=spike_index))
 	}
-	return(list("despiked_ts"=replace(x, spike_index, NA), "spike_loc"=spike_index))
+
+	if(variant=="v3"){
+		x_c <- zoo::na.locf(zoo::na.locf(x, na.rm=FALSE), fromLast=TRUE)
+		nL <- length(x)
+		noise <- rnorm(nL, 0, abs(0.0001*x_c))
+		x_raw <- x_c + noise ## In case of repeated consecutive values, the rm filter computation might return an error/warning. To prevent/avoid it a small amount of noise is added to the original data.
+		
+		## Repeated Median Filter
+		mod_rm <- rm.filter(x_raw, width=wsignal)
+		fit_rm <- mod_rm$level$RM
+		
+		## Scale estimation (in case of any error during rm filter computation, the scale parameter is estimated on differenced data)
+		ifelse(length(which(is.na(fit_rm))) > 1,
+		{res <- c(NA, diff(x_c));
+			lbound <- Qn(na.omit(res));
+			sigma_est_base <- zoo::na.locf(zoo::na.locf(zoo::na.approx(rollapply(res, width=wscale, by=wby, function(x) Qn(x), fill=NA), na.rm=FALSE), na.rm=FALSE), fromLast=TRUE);
+			sigma_est <- replace(sigma_est_base, which(sigma_est_base < lbound), lbound)
+			},
+		{res <- x_c - fit_rm;
+		lbound <- max(Qn(na.omit(res)),0.01); ## minimum threshold bound for the scale parameter set equal to 0.01
+		sigma_est_base <- zoo::na.locf(zoo::na.locf(zoo::na.approx(rollapply(res, width=wscale, by=wby, function(x) Qn(na.omit(x)), fill=NA), na.rm=FALSE), na.rm=FALSE), fromLast=TRUE);
+		sigma_est <- replace(sigma_est_base, which(sigma_est_base < lbound), lbound)
+		})
+
+		## Outlier detection and removal
+		spike_index <- which(abs(res) > zth*sigma_est)
+		n_spike <- length(spike_index)
+		ts_cleaned <- replace(x, spike_index, fit_rm[spike_index])	
+	
+		## Output building
+		return(list("ts_cleaned"=ts_cleaned,"spike_loc"=spike_index))
+	}
 }
