@@ -42,7 +42,7 @@ despiking(x, mfreq, variant, wsignal, wscale, wby = 1, zth = 5, alpha = 0.01)
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 A list containing the following components:
-  \item{despiked_ts }{A vector of the despiked time-series.}
+  \item{ts_cleaned }{A vector of the despiked time-series.}
   \item{spike_loc }{Integer. Location of the detected spikes.}
 }
 \references{
