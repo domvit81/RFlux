@@ -7,7 +7,7 @@
 	get_md,
 	inst_prob_test,
 	mahrt,
-	parallel_despiking,
+	robf_despiking,
 	qcStat,
 	tlag_detection,
 	mode)
