@@ -33,8 +33,8 @@ parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, z
 }
 \value{
 A list containing the following components:
-  \item{ts_cleaned}{A vector of the despiked time-series.}
-  \item{spike_loc}{Integer. Location of the detected spikes.}
+  \item{ts_cleaned }{A vector of the despiked time-series.}
+  \item{spike_loc }{Integer. Location of the detected spikes.}
 }
 \references{
 Fried, R. Schettlinger, K. Matthias Borowski, M. robfilter: Robust
