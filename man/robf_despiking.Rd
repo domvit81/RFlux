@@ -1,9 +1,9 @@
-\name{parallel_despiking}
-\alias{parallel_despiking}
+\name{robf_despiking}
+\alias{robf_despiking}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Despiking eddy covariance raw data}
 \description{
-A parallel implementation of the despiking algorithm for high-frequency eddy covariance raw data}
+A parallel implementation of robust functionals for despiking high-frequency eddy covariance raw data}
 \usage{
 parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, zth = 5)
 }
@@ -25,7 +25,7 @@ parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, z
   calculate the scale parameter at every by-th point rather than every point (default=1). Large values of wby reduce the computational time, but can introduce bias in the scale parameter estimation.
 }
   \item{zth}{
-  the threshold value of the z-sigma rule ((only for met and raw variants).
+  the threshold value of the z-sigma rule.
 }
 }
 \details{
@@ -33,8 +33,8 @@ parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, z
 }
 \value{
 A list containing the following components:
-  \item{despiked_ts }{A vector of the despiked time-series.}
-  \item{spike_loc }{Integer. Location of the detected spikes.}
+  \item{ts_cleaned}{A vector of the despiked time-series.}
+  \item{spike_loc}{Integer. Location of the detected spikes.}
 }
 \references{
 Fried, R. Schettlinger, K. Matthias Borowski, M. robfilter: Robust
