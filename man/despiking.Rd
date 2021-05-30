@@ -20,19 +20,19 @@ despiking(x, mfreq, variant, wsignal, wscale, wby = 1, zth = 5, alpha = 0.01)
 	"v1" mainly designed for (half-)hourly EC fluxes (missing values are allowed); "v2" mainly designed for (half-)hourly meteo time series (a low percentage of missing values is allowed); "v3" mainly designed for high-frequency EC raw data.
 	}
   \item{wsignal}{
-  the window width used to estimate the underlying signal (only for met and raw variants).
+  the window width used to estimate the underlying signal (only for v2 and v3 variants).
   }
   \item{wscale}{
-	the window width used to estimate the local scale paramater (only for met and raw variants).
+	the window width used to estimate the local scale paramater (only for v2 and v3 variants).
 	}
   \item{wby}{
   calculate the scale parameter at every by-th point rather than every point (default=1). Large values of wby reduce the computational time, but can introduce bias in the scale parameter estimation.
 	}
   \item{zth}{
-  the threshold value of the z-sigma rule ((only for met and raw variants).
+  the threshold value of the z-sigma rule ((only for v2 and v3 variants).
 	}
   \item{alpha}{
-  the significance level used in the outlier detection rule (only for flx variant).
+  the significance level used in the outlier detection rule (only for v1 variant).
   }
 }
 \details{
