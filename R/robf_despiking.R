@@ -14,7 +14,7 @@ robf_despiking <- function(x, mfreq, file_length){
 	
 	if(wl > mfreq*60+1){
 		dspk <- despiking(x, mfreq=mfreq, variant="v3", wsignal=wl, wscale=wl, wby=1, zth=5);
-		spike_loc <- dspk$spike_loc
+		spike_loc <- dspk$spike_loc;
 		ts_cleaned <- dspk$ts_cleaned
 		}
 	
