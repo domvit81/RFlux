@@ -31,7 +31,8 @@ A list containing the following components:
 Fried, R. Schettlinger, K. Matthias Borowski, M. robfilter: Robust
   Time Series Filters. R package version  4.1.1.  \url{https://CRAN.R-project.org/package=robfilter}, 2018.
 
-Vitale, D. A perfomance evaluation of despiking algorithms for eddy covariance data. Nature Scientific Reports (in review).
+Vitale, D. A perfomance evaluation of despiking algorithms for eddy covariance data, 
+Scientific Reports, 11, 11628, doi: \url{https://doi.org/10.1038/s41598-021-91002-y}, 2021.
 }
 \author{
 Domenico Vitale
