@@ -37,8 +37,8 @@ tlag_detection <- function (x, y, mfreq, x.model = ar.res, AIC=FALSE, LAG.MAX=mf
 	tl0 <- which.max(abs(scross_cor))
  
     tlag_pw <- tl0 - LAG.MAX - 1
-    tlag_max <- local_max(scross_cov[max(1,tl0-12):min(tl0+12, LAG.MAX)]) + tl0 - 13 - LAG.MAX - 1
-    tlag_min <- local_min(scross_cov[max(1,tl0-12):min(tl0+12, LAG.MAX)]) + tl0 - 13 - LAG.MAX - 1
+    tlag_max <- local_max(scross_cov[max(1,tl0-12):min(tl0+12, LAG.MAX*2)]) + tl0 - 13 - LAG.MAX - 1
+    tlag_min <- local_min(scross_cov[max(1,tl0-12):min(tl0+12, LAG.MAX*2)]) + tl0 - 13 - LAG.MAX - 1
     
    if(length(tlag_max)==0 & length(tlag_min)==0)  tlag_opt <- tlag_pw
    if(length(tlag_max)==1 & length(tlag_min)==0) tlag_opt <- tlag_max 
