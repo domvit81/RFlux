@@ -57,7 +57,7 @@ A robust data cleaning procedure for eddy covariance flux measurements,
 Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 
 Vitale, D. A perfomance evaluation of despiking algorithms for eddy covariance data,
-Nature Scientific Reports, 11, 11628, doi: \url{https://doi.org/10.1038/s41598-021-91002-y}, 2021.
+Scientific Reports, 11, 11628, doi: \url{https://doi.org/10.1038/s41598-021-91002-y}, 2021.
 }
 
 \author{
