@@ -15,17 +15,8 @@ parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, z
   \item{mfreq}{
   the main frequency of the observed time series (24 or 48 for hourly and half-hourly time series, respectively; 10 or 20 for raw EC data acquired at 10Hz or 20Hz, respectively).
 }
-  \item{wsignal}{
-  the window width used to estimate the underlying signal (only for met and raw variants).
-}
-  \item{wscale}{
-  the window width used to estimate the local scale paramater (only for met and raw variants).
-}
-  \item{wby}{
-  calculate the scale parameter at every by-th point rather than every point (default=1). Large values of wby reduce the computational time, but can introduce bias in the scale parameter estimation.
-}
-  \item{zth}{
-  the threshold value of the z-sigma rule.
+  \item{file_length}{
+  the raw data file length duration in minutes (e.g. 30 or 60).
 }
 }
 \details{
