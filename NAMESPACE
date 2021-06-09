@@ -33,8 +33,7 @@ importFrom("zoo", "rollapply", "coredata", "na.approx", "na.locf")
 importFrom("grDevices", "dev.off", "jpeg")
 importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points", "abline", "lines", "hist")
 importFrom("car", "Boxplot")
-importFrom("future.apply", "future_apply")
+importFrom("future", "plan", "multicore")
 importFrom("lubridate", "round_date")
 importFrom("MASS", "rlm")
-
-
+importFrom("gtools", "odd")
