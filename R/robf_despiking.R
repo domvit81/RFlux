@@ -1,7 +1,7 @@
 
 
 
-robf_despiking <- function(x, mfreq, file_length=30){
+robf_despiking <- function(x, mfreq, filelength=30){
 	# Window width selection
 	nL <- mfreq*60*file_length
 	x <- x[1:nL]
