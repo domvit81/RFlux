@@ -1,5 +1,5 @@
 
-get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL, tlag_meth, despike_meth=c("None", "VM97", "M13"), detrend_meth=c("BA", "LD"), tilt_correction_meth=c("DR", "PF")){
+get_md <- function(path_ecmd=NULL, path_rawdata= NULL, path_output=NULL, online, path_sa_file=NULL, path_pf_file=NULL, path_biomet_file=NULL, roughness_length=NULL, displacement_height=NULL, tlag_meth, despike_meth=c("None", "VM97", "M13"), detrend_meth=c("BA", "LD"), tilt_correction_meth=c("DR", "PF")){
 
 dir.create(path_output, showWarnings=FALSE, recursive=TRUE)
 
@@ -222,10 +222,10 @@ cat(paste("\ndata_label=Not set",
 "\n[Site]",
 "\naltitude=",md["ALTITUDE"],
 "\ncanopy_height=",md["CANOPY_HEIGHT"],
-"\ndisplacement_height=0",
+"\ndisplacement_height=",ifelse(!is.null(displacement_height),displacement_height,0),
 "\nlatitude=",md["LATITUDE"],
 "\nlongitude=",md["LONGITUDE"],
-"\nroughness_length=0",
+"\nroughness_length=",ifelse(!is.null(roughness_length),roughness_length,0),
 "\nsite_id=",md["SITEID"],
 "\nsite_name=",md["SITEID"],
 "\n",
@@ -306,8 +306,8 @@ ifelse(online==TRUE, "\nsa_mode=0","\nsa_mode=1"), ## 0 if spectral assessment f
 "\nbinary_little_end=-1",
 "\nbinary_nbytes=-1",
 "\nbiom_dir=",
-"\nbiom_ext=.txt",## TO SET
-"\nbiom_file=",
+"\nbiom_ext=",
+"\nbiom_file=",ifelse(!is.null(path_biomet_file), path_biomet_file, ""),
 "\nbiom_rec=0",
 "\ncol_air_p=0",
 "\ncol_air_t=0",
@@ -344,7 +344,7 @@ ifelse(md["GA_PATH"]=="open", "\ncol_diag_75=8","\ncol_diag_75=0"),
 "\nmake_dataset=0",
 "\nmaster_sonic=",md["SA_MODEL"],
 "\nout_amflux=0",
-"\nout_biomet=0",
+"\nout_biomet=",ifelse(!is.null(path_biomet_file), 1, 0),
 "\nout_ghg_eu=0",
 "\nout_mean_cosp=0",
 "\nout_mean_spec=0",
@@ -368,7 +368,7 @@ ifelse(md["GA_PATH"]=="open", "\ncol_diag_75=8","\ncol_diag_75=0"),
 "\nsonic_output_rate=-1",
 "\nsw_version=6.1.0",
 "\ntob1_format=0",
-"\nuse_biom=0",###TO DO
+"\nuse_biom=",ifelse(!is.null(path_biomet_file), 1, 0),
 "\nuse_dyn_md_file=1",###SET 1 to enable dynamic metadata file uploading, 0 otherwise
 "\nuse_pfile=1",
 if(md["GA_PATH"]=="closed") "\nwpl_meth=0",
