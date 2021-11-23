@@ -1,6 +1,7 @@
 ##exportPattern("^[[:alpha:]]+")
 
  export(cleanFlux,
+	convert_rawdata,
 	despiking,
 	ecworkset,
 	eddypro_run,
@@ -37,3 +38,4 @@ importFrom("future", "plan", "multicore")
 importFrom("lubridate", "round_date")
 importFrom("MASS", "rlm")
 importFrom("gtools", "odd")
+importFrom("tools", "file_ext")
