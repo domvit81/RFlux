@@ -122,7 +122,7 @@ convert_rawdata <- function(
 
 	data_2exp <- data.frame(U, V, W, T_SONIC, CO2, H2O, SA_DIAG, GA_DIAG, T_CELL, T_CELL_IN, T_CELL_OUT, PRESS_CELL)
 
-	fwrite(data_2exp, paste0(file_path_out, siteID, "_EC_", format(strptime(timestamp_orig, format=timestamp_format, tz="GMT"), format="%Y%m%d%H%M", tz="GMT"),"_", info_LN, "_", info_FN,".csv" ), col.names=TRUE, row.names=FALSE, quote=FALSE, na="-9999",dec=".", sep=",")
+	fwrite(data_2exp, paste0(file_path_out, "/", siteID, "_EC_", format(strptime(timestamp_orig, format=timestamp_format, tz="GMT"), format="%Y%m%d%H%M", tz="GMT"),"_", info_LN, "_", info_FN,".csv" ), col.names=TRUE, row.names=FALSE, quote=FALSE, na="-9999",dec=".", sep=",")
 	
 }
 
