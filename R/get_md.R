@@ -368,7 +368,7 @@ ifelse(md["GA_PATH"]=="open", "\ncol_diag_75=8","\ncol_diag_75=0"),
 "\nsonic_output_rate=-1",
 "\nsw_version=6.1.0",
 "\ntob1_format=0",
-"\nuse_biom=",ifelse(!is.null(path_biomet_file), 1, 0),
+"\nuse_biom=",ifelse(!is.null(path_biomet_file), 2, 0),
 "\nuse_dyn_md_file=1",###SET 1 to enable dynamic metadata file uploading, 0 otherwise
 "\nuse_pfile=1",
 if(md["GA_PATH"]=="closed") "\nwpl_meth=0",
