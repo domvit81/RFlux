@@ -44,7 +44,7 @@ despiking <- function(x, mfreq, variant, wsignal, wscale, wby=1, zth=5, alpha=0.
 		estimate <- c()
 		if (length(spike_tmp)>0) {
 			for (i in 1:length(spike_tmp)){
-				if (spike_tmp[i] < (wsignal-1)/2 | spike_tmp[i] >= N-(wsignal-1)/2) {spike <- c(spike, spike_tmp[i])}
+				if (spike_tmp[i] < (wsignal-1)/2 | spike_tmp[i] >= N-(wsignal-1)/2) {spike_index <- c(spike_index, spike_tmp[i])}
 				if (spike_tmp[i] > (wsignal-1)/2 & spike_tmp[i] < N-(wsignal-1)/2) {
 					ind_window_start <- spike_tmp[i]-(wsignal-1)/2;
 					ind_window_end <- spike_tmp[i]+(wsignal-1)/2;
