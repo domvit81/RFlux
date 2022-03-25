@@ -8,16 +8,16 @@
 	get_md,
 	inst_prob_test,
 	mahrt,
-	robf_despiking,
+	mode,
 	qcStat,
 	tlag_detection,
-	mode)
+	robf_despiking)
 	
 import(utils)
 import(bit64)
 
 
-importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "quantile", "time", "ts", "window", "rnorm", "as.ts", "ar.ols", "acf", "residuals")
+importFrom("stats", "ccf", "cov", "lm", "median", "na.omit", "na.pass", "na.contiguous", "quantile", "time", "ts", "window", "rnorm", "as.ts", "ar.ols", "acf", "residuals")
 importFrom("utils", "write.table")
 importFrom("data.table", "fread", "fwrite", "shift")
 importFrom("xts", "xts", "period.apply", "endpoints")
@@ -32,10 +32,12 @@ importFrom("imputeTS", "statsNA")
 importFrom("stringr", "str_sub")
 importFrom("zoo", "rollapply", "coredata", "na.approx", "na.locf")
 importFrom("grDevices", "dev.off", "jpeg")
-importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points", "abline", "lines", "hist")
+importFrom("graphics", "axis", "box", "legend", "mtext", "par", "plot", "points", "abline", "lines", "hist", "layout")
 importFrom("car", "Boxplot")
 importFrom("future", "plan", "multicore")
 importFrom("lubridate", "round_date")
 importFrom("MASS", "rlm")
 importFrom("gtools", "odd")
 importFrom("tools", "file_ext")
+importFrom("diptest", "dip.test")
+importFrom("forecast", "Acf")
