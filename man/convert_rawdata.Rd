@@ -27,9 +27,8 @@ sep,
 dec, 
 timestamp_loc=c(NULL, NULL), 
 timestamp_format, 
-siteID, 
-info_LN, 
-info_FN)
+siteID="Cc-Xxx", 
+labels=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -96,11 +95,8 @@ info_FN)
 	\item{siteID}{
 	a 6-character string denoting the Site ID (eg. CC-Xxx).
 	}
-	\item{info_LN}{
-	(optional) a 2-character string denoting the ID of the logger where variables are stored.
-	}
-	\item{info_FN}{
-	(optional) a 2-character string denoting the ID of the file where variables are stored.
+	\item{labels}{
+	(optional) a character string denoting further information. Default is NULL.
 	}
 }
 \details{

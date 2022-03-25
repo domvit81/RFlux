@@ -37,14 +37,15 @@ A data frame containing:
 \item{LGD_X}{Longest Gap Duration in raw, high-frequency, data used for X flux variable estimation.}
 \item{Skew_X}{Skewness of X variable.}
 \item{Kurt_X}{Kurtosis of X variable.}
-\item{KID0_X}{Kurtosis Index of Differenced X variable.}
-\item{KID1_X}{Kurtosis Index of Differenced X variable excluding the effect of possible low resolution problems.}
+\item{KID0_X}{Kurtosis Index of Differenced X variable without esclusion of zero values.}
+\item{KID_X}{Kurtosis Index of Differenced X variable excluding zeros, ie the effect of possible low resolution problems.}
 \item{HF5_X}{Statistic of the homogeneity test applied on X variable fluctuations (percentage of data exceeding \eqn{+/- 5\sigma}).}
 \item{HF10_X}{Statistic of the homogeneity test applied on X variable fluctuations (percentage of data exceeding \eqn{+/- 10\sigma}).}
 \item{HD5_X}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{+/- 5\sigma}).}
 \item{HD10_X}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{+/- 10\sigma}).}
-\item{ACF_X}{Autocorrelation at lag 1.}
+\item{AL1_X}{Autocorrelation at lag 1.}
 \item{DDI_X}{Maximum number of binned data points (number of bins proportional to the sample size).}
+\item{DIP_X}{P-value of the Hartigans' Dip Test for Unimodality.}
 \item{COV_XY}{Covariance between X and Y variables.}
 \item{N0_X}{Number of repeated consecutive values affecting X flux variable.}
 \item{LSR_X}{Statistic of the Low Signal Resolution test for X flux variable.}

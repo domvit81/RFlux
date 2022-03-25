@@ -81,10 +81,12 @@ Returns a dataframe containing:
 \item{X_HD5_FLAG}{Flag for the homogeneity test applied on differenced X variable (0: negligible evidences of error, IF X_HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}X_HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF X_HD5_STAT>4).}
 \item{X_HD10_STAT}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
 \item{X_HD10_FLAG}{Flag for the homogeneity test applied on differenced X variable (0: negligible evidences of error, IF X_HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}X_HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF X_HD10_STAT>1).}
-\item{X_ACF_STAT}{Autocorrelation at lag 1 for the X variable.}
-\item{X_ACF_FLAG}{Flag for the autocorrelation at lag 1 for the X variable (0: negligible evidences of error, IF X_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<X_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF X_ACF_STAT\eqn{\le}0.5).}
-\item{X_DDI_STAT}{Maximum number of binned data points for the X variable (number of bins proportional to the sample size).}
+\item{X_AL1_STAT}{Autocorrelation at lag 1 for the X variable.}
+\item{X_AL1_FLAG}{Flag for the autocorrelation at lag 1 for the X variable (0: negligible evidences of error, IF X_AL1_STAT>0.75; 1: moderate evidences of error, IF 0.5<X_AL1_STAT\eqn{\le}0.75; 2: severe evidences of error, IF X_AL1_STAT\eqn{\le}0.5).}
+\item{X_DDI_STAT}{Maximum number of binned data points for the X variable (number of classes (bins) calculated by Freedman-Diaconis rule based on the inte-quartile range proportional to the sample size).}
 \item{X_DDI_FLAG}{Flag for the X_DDI_STAT (0: negligible evidences of error, IF X_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5\le}X_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF X_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
+\item{X_DIP_STAT}{P-value of the Hartigans' Dip Test for Unimodality.}
+\item{X_DDI_FLAG}{Flag for the X_DIP_STAT (0: negligible evidences of error, IF X_DIP_STAT>0.1; 1: moderate evidences of error, IF \eqn{0.05\le}X_DDI_STAT<\eqn{0.1}; 2: severe evidences of error, IF X_DIP_STAT\eqn{\ge 0.05}).}
 \item{X_KID_STAT}{Kurtosis Index of Differenced X variable.}
 \item{X_KID_FLAG}{Flag for the X_KID_STAT (0: negligible evidences of error, IF X_KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}X_KID_STAT\eqn{\le}50; 2: severe evidences of error, IF X_KID_STAT>50).}
 \item{ITC_STAT}{Statistic of the Integral Turbulence Characteristics test (Foken and Wichura, 1996).}

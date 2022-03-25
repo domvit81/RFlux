@@ -29,14 +29,14 @@ Flux estimation involves the following options/methods:
 
 The open source EddyPro software (registered trademark, LI-COR Biosciences, 2019) is used to this aim employing also the estimation of micrometeorological parameters useful in subsequent analyses. It is required the EddyPro software is installed on your system (for download see \url{www.licor.com/EddyPro}).
 
-Quality control involves the data cleaning procedure described in Vitale et al (2019). Its implementation involves a three-step procedure
+Quality control involves the data cleaning procedure described in Vitale et al (2020). Its implementation involves a three-step procedure
 \describe{
-\item{Step 1:}{Estimation of the test statistics via the \code{\link{qcStat}} function.}
+\item{Step 1:}{Estimation of the QC test statistics via the \code{\link{qcStat}} function.}
 \item{Step 2:}{Generating the workset via the \code{\link{ecworkset}} function.}
 \item{Step 3:}{Application of data cleaning procedure (including despiking) via the \code{\link{cleanFlux}} function.}
 }
 
-\emph{Acknowledgements.} Rflux has been developed in the context of the ICOS Ecosystem Thematic Centre. DV thanks the ENVRIPLUS H2020 European project (Grant Agreement 654182) for the support. DP thanks the ENVRIFAIR H2020 European project (Grant Agreement 824068) for the support.
+\emph{Acknowledgements.} RFlux has been developed in the context of the ICOS Ecosystem Thematic Centre. DV and DP thank the ENVRIPLUS H2020 European project (Grant Agreement 654182) and the ENVRIFAIR H2020 European project (Grant Agreement 824068) for the support.
 
 
 
@@ -64,7 +64,7 @@ Rebmann, C., Kolle, O., Heinesch, B., Queck, R., Ibrom, A., Aubinet, M. (2012). 
 
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D. (2019).
 A robust data cleaning procedure for eddy covariance flux measurements,
-Biogeosciences Discussions, pp 1-36, doi: \url{https://doi.org/10.5194/bg-2019-270}.
+Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 
 Webb, E.K., Pearman, G.I., Leuning, R. (1980). Correction of flux measurements for density effects due to heat and water vapour transfer. Quarterly Journal of the Royal Meteorological Society, 106(447), pp 85-100, doi: \url{https://doi.org/10.1002/qj.49710644707}.
 
