@@ -162,19 +162,25 @@ WDir2Exc_3 <- c(intersect(which(w3_u-w3_l > 0 & !is.na(w3_u-w3_l)), which(WDir >
 WDir2Exc <- union(union(WDir2Exc_1,WDir2Exc_2),WDir2Exc_3)
 length(WDir2Exc)
 
-ACF_U_SevEr <- which(ec_data[,"ACF_u"] <= 0.5)
-ACF_V_SevEr <- which(ec_data[,"ACF_v"] <= 0.5)
-ACF_W_SevEr <- which(ec_data[,"ACF_w"] <= 0.5)
-ACF_TS_SevEr <- which(ec_data[,"ACF_ts"] <= 0.5)
-ACF_CO2_SevEr <- which(ec_data[,"ACF_co2"] <= 0.5)
-ACF_H2O_SevEr <- which(ec_data[,"ACF_h2o"] <= 0.5)
+############################################################################################################################################################################
+#
+#  Instrumental Problem Detection by means of ACF and DDI tests
+#
+############################################################################################################################################################################
 
-ACF_U_ModEr <- which(ec_data[,"ACF_u"] > 0.5 & ec_data[,"ACF_u"] <= 0.75)
-ACF_V_ModEr <- which(ec_data[,"ACF_v"] > 0.5 & ec_data[,"ACF_v"] <= 0.75)
-ACF_W_ModEr <- which(ec_data[,"ACF_w"] > 0.5 & ec_data[,"ACF_w"] <= 0.75)
-ACF_TS_ModEr <- which(ec_data[,"ACF_ts"] > 0.5 & ec_data[,"ACF_ts"] <= 0.75)
-ACF_CO2_ModEr <- which(ec_data[,"ACF_co2"] > 0.5 & ec_data[,"ACF_co2"] <= 0.75)
-ACF_H2O_ModEr <- which(ec_data[,"ACF_h2o"] > 0.5 & ec_data[,"ACF_h2o"] <= 0.75)
+AL1_U_SevEr <- which(ec_data[,"AL1_u"] <= 0.5)
+AL1_V_SevEr <- which(ec_data[,"AL1_v"] <= 0.5)
+AL1_W_SevEr <- which(ec_data[,"AL1_w"] <= 0.5)
+AL1_TS_SevEr <- which(ec_data[,"AL1_ts"] <= 0.5)
+AL1_CO2_SevEr <- which(ec_data[,"AL1_co2"] <= 0.5)
+AL1_H2O_SevEr <- which(ec_data[,"AL1_h2o"] <= 0.5)
+
+AL1_U_ModEr <- which(ec_data[,"AL1_u"] > 0.5 & ec_data[,"AL1_u"] <= 0.75)
+AL1_V_ModEr <- which(ec_data[,"AL1_v"] > 0.5 & ec_data[,"AL1_v"] <= 0.75)
+AL1_W_ModEr <- which(ec_data[,"AL1_w"] > 0.5 & ec_data[,"AL1_w"] <= 0.75)
+AL1_TS_ModEr <- which(ec_data[,"AL1_ts"] > 0.5 & ec_data[,"AL1_ts"] <= 0.75)
+AL1_CO2_ModEr <- which(ec_data[,"AL1_co2"] > 0.5 & ec_data[,"AL1_co2"] <= 0.75)
+AL1_H2O_ModEr <- which(ec_data[,"AL1_h2o"] > 0.5 & ec_data[,"AL1_h2o"] <= 0.75)
 
 DDI_U_SevEr <- which(ec_data[,"DDI_u"] >= hz*60*5)
 DDI_V_SevEr <- which(ec_data[,"DDI_v"] >= hz*60*5)
@@ -190,23 +196,22 @@ DDI_TS_ModEr <- which(ec_data[,"DDI_ts"] >= hz*30*5 & ec_data[,"DDI_ts"] < hz*60
 DDI_CO2_ModEr <- which(ec_data[,"DDI_co2"] >= hz*30*5 & ec_data[,"DDI_co2"] < hz*60*5)
 DDI_H2O_ModEr <- which(ec_data[,"DDI_h2o"] >= hz*30*5 & ec_data[,"DDI_h2o"] < hz*60*5)
 
+INT_NEE_SevEr <- union(union(union(union(union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(FC_FMR_FLAG==2), which(FC_LGD_FLAG==2))), OoR_NEE_index), AL1_W_SevEr), AL1_CO2_SevEr), DDI_W_SevEr), DDI_CO2_SevEr) 
+INT_LE_SevEr <- union(union(union(union(union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(LE_FMR_FLAG==2), which(LE_LGD_FLAG==2))), OoR_LE_index), AL1_W_SevEr), AL1_H2O_SevEr), DDI_W_SevEr), DDI_H2O_SevEr)
+INT_H_SevEr <-  union(union(union(union(union(union(union(WDir2Exc,which(SA_Diag!=0)), union(which(H_FMR_FLAG==2), which(H_LGD_FLAG==2))), OoR_H_index), AL1_W_SevEr), AL1_TS_SevEr), DDI_W_SevEr), DDI_TS_SevEr)
+INT_TAU_SevEr <-  union(union(union(union(union(union(union(union(union(WDir2Exc,which(SA_Diag!=0)), union(which(TAU_FMR_FLAG==2), which(TAU_LGD_FLAG==2))), OoR_TAU_index), AL1_U_SevEr), AL1_V_SevEr), AL1_W_SevEr), DDI_U_SevEr), DDI_V_SevEr), DDI_W_SevEr)
 
-INT_NEE_SevEr <- union(union(union(union(union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(FC_FMR_FLAG==2), which(FC_LGD_FLAG==2))), OoR_NEE_index), ACF_W_SevEr), ACF_CO2_SevEr), DDI_W_SevEr), DDI_CO2_SevEr) 
-INT_LE_SevEr <- union(union(union(union(union(union(union(WDir2Exc,union(which(SA_Diag!=0),which(GA_Diag!=0))), union(which(LE_FMR_FLAG==2), which(LE_LGD_FLAG==2))), OoR_LE_index), ACF_W_SevEr), ACF_H2O_SevEr), DDI_W_SevEr), DDI_H2O_SevEr)
-INT_H_SevEr <-  union(union(union(union(union(union(union(WDir2Exc,which(SA_Diag!=0)), union(which(H_FMR_FLAG==2), which(H_LGD_FLAG==2))), OoR_H_index), ACF_W_SevEr), ACF_TS_SevEr), DDI_W_SevEr), DDI_TS_SevEr)
-INT_TAU_SevEr <-  union(union(union(union(union(union(union(union(union(WDir2Exc,which(SA_Diag!=0)), union(which(TAU_FMR_FLAG==2), which(TAU_LGD_FLAG==2))), OoR_TAU_index), ACF_U_SevEr), ACF_V_SevEr), ACF_W_SevEr), DDI_U_SevEr), DDI_V_SevEr),DDI_W_SevEr)
-
-INT_NEE_ModEr <- union(union(union(union(union(which(FC_FMR_FLAG==1), which(FC_LGD_FLAG==1)), ACF_W_ModEr), ACF_CO2_ModEr), DDI_W_ModEr), DDI_CO2_ModEr)
-INT_LE_ModEr <- union(union(union(union(union(which(LE_FMR_FLAG==1), which(LE_LGD_FLAG==1)), ACF_W_ModEr), ACF_H2O_ModEr), DDI_W_ModEr), DDI_H2O_ModEr)
-INT_H_ModEr <-  union(union(union(union(union(which(H_FMR_FLAG==1),which(H_LGD_FLAG==1)), ACF_W_ModEr), ACF_TS_ModEr), DDI_W_ModEr), DDI_TS_ModEr)
-INT_TAU_ModEr <-  union(union(union(union(union(union(union(which(TAU_FMR_FLAG==1),which(TAU_LGD_FLAG==1)), ACF_U_ModEr), ACF_V_ModEr), ACF_W_ModEr), DDI_U_ModEr), DDI_V_ModEr), DDI_W_ModEr)
+INT_NEE_ModEr <- union(union(union(union(union(which(FC_FMR_FLAG==1), which(FC_LGD_FLAG==1)), AL1_W_ModEr), AL1_CO2_ModEr), DDI_W_ModEr), DDI_CO2_ModEr)
+INT_LE_ModEr <- union(union(union(union(union(which(LE_FMR_FLAG==1), which(LE_LGD_FLAG==1)), AL1_W_ModEr), AL1_H2O_ModEr), DDI_W_ModEr), DDI_H2O_ModEr)
+INT_H_ModEr <-  union(union(union(union(union(which(H_FMR_FLAG==1),which(H_LGD_FLAG==1)), AL1_W_ModEr), AL1_TS_ModEr), DDI_W_ModEr), DDI_TS_ModEr)
+INT_TAU_ModEr <-  union(union(union(union(union(union(union(which(TAU_FMR_FLAG==1),which(TAU_LGD_FLAG==1)), AL1_U_ModEr), AL1_V_ModEr), AL1_W_ModEr), DDI_U_ModEr), DDI_V_ModEr), DDI_W_ModEr)
 
 
-#################################################################################################################################################################################################################
+############################################################################################################################################################################
 #
-#  Instrumental Problem Detection by means of LSR, KID, SC, ACF and DDI tests
+#  Low Signal Resolution Problem Detection - LSR test
 #
-#################################################################################################################################################################################################################
+############################################################################################################################################################################
 
 LSR_H_SevEr <- which(ec_data[,"LSR_H"]< 0.99)
 LSR_LE_SevEr <- which(ec_data[,"LSR_LE"]< 0.99)
@@ -218,20 +223,25 @@ LSR_LE_ModEr <- which(ec_data[,"LSR_LE"]>=0.99 & ec_data[,"LSR_LE"]<=0.995)
 LSR_NEE_ModEr <- which(ec_data[,"LSR_Fc"]>=0.99 & ec_data[,"LSR_Fc"]<=0.995)
 LSR_TAU_ModEr <- which(ec_data[,"LSR_TAU"]>=0.99 & ec_data[,"LSR_TAU"]<=0.995)
 
+############################################################################################################################################################################
+#
+#  Structural Changes Detection by means of KID, HF, HD, DIP tests
+#
+############################################################################################################################################################################
 
 KTHs <- 50
-KID_V_SevEr <- which(ec_data[,"KID1_v"]>KTHs)
-KID_H_SevEr <- union(which(ec_data[,"KID1_w"]>KTHs), which(ec_data[,"KID1_ts"]>KTHs))
-KID_LE_SevEr <- union(which(ec_data[,"KID1_w"]>KTHs), which(ec_data[,"KID1_h2o"]>KTHs))
-KID_NEE_SevEr <- union(which(ec_data[,"KID1_w"]>KTHs), which(ec_data[,"KID1_co2"]>KTHs))
-KID_TAU_SevEr <- union(union(which(ec_data[,"KID1_u"]>KTHs), which(ec_data[,"KID1_v"]>KTHs)), which(ec_data[,"KID1_w"]>KTHs))
+KID_V_SevEr <- which(ec_data[,"KID_v"]>KTHs)
+KID_H_SevEr <- union(which(ec_data[,"KID_w"]>KTHs), which(ec_data[,"KID_ts"]>KTHs))
+KID_LE_SevEr <- union(which(ec_data[,"KID_w"]>KTHs), which(ec_data[,"KID_h2o"]>KTHs))
+KID_NEE_SevEr <- union(which(ec_data[,"KID_w"]>KTHs), which(ec_data[,"KID_co2"]>KTHs))
+KID_TAU_SevEr <- union(union(which(ec_data[,"KID_u"]>KTHs), which(ec_data[,"KID_v"]>KTHs)), which(ec_data[,"KID_w"]>KTHs))
 
 KTHm <- 30
-KID_V_ModEr <- which(ec_data[,"KID1_v"]>KTHm)
-KID_H_ModEr <- union(which(ec_data[,"KID1_w"]>KTHm), which(ec_data[,"KID1_ts"]>KTHm))
-KID_LE_ModEr <- union(which(ec_data[,"KID1_w"]>KTHm), which(ec_data[,"KID1_h2o"]>KTHm))
-KID_NEE_ModEr <- union(which(ec_data[,"KID1_w"]>KTHm), which(ec_data[,"KID1_co2"]>KTHm))
-KID_TAU_ModEr <- union(union(which(ec_data[,"KID1_u"]>KTHm), which(ec_data[,"KID1_v"]>KTHm)),which(ec_data[,"KID1_w"]>KTHm))
+KID_V_ModEr <- which(ec_data[,"KID_v"]>KTHm)
+KID_H_ModEr <- union(which(ec_data[,"KID_w"]>KTHm), which(ec_data[,"KID_ts"]>KTHm))
+KID_LE_ModEr <- union(which(ec_data[,"KID_w"]>KTHm), which(ec_data[,"KID_h2o"]>KTHm))
+KID_NEE_ModEr <- union(which(ec_data[,"KID_w"]>KTHm), which(ec_data[,"KID_co2"]>KTHm))
+KID_TAU_ModEr <- union(union(which(ec_data[,"KID_u"]>KTHm), which(ec_data[,"KID_v"]>KTHm)),which(ec_data[,"KID_w"]>KTHm))
 
 SCTH1 <- hz*60*30*0.04
 SCTH2 <- hz*60*30*0.01
@@ -254,11 +264,17 @@ HD_CO2_SevEr <- union(which(ec_data[,"HD5_co2"]>SCTH1), which(ec_data[,"HD10_co2
 HF_H2O_SevEr <- union(which(ec_data[,"HF5_h2o"]>SCTH1), which(ec_data[,"HF10_h2o"]>SCTH2))
 HD_H2O_SevEr <- union(which(ec_data[,"HD5_h2o"]>SCTH1), which(ec_data[,"HD10_h2o"]>SCTH2))
 
+DIP_U_SevEr <- which(ec_data[,"DIP_u"] < 0)
+DIP_V_SevEr <- which(ec_data[,"DIP_v"] < 0)
+DIP_W_SevEr <- which(ec_data[,"DIP_w"] < 0)
+DIP_TS_SevEr <- which(ec_data[,"DIP_ts"] < 0)
+DIP_CO2_SevEr <- which(ec_data[,"DIP_co2"] < 0)
+DIP_H2O_SevEr <- which(ec_data[,"DIP_h2o"] < 0)
 
-SC_H_SevEr <- union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_TS_SevEr), HD_TS_SevEr), KID_H_SevEr)
-SC_LE_SevEr <- union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_H2O_SevEr), HD_H2O_SevEr), KID_LE_SevEr)
-SC_NEE_SevEr <- union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_CO2_SevEr), HD_CO2_SevEr), KID_NEE_SevEr)
-SC_TAU_SevEr <- union(union(union(union(union(union(HF_U_SevEr, HD_U_SevEr), HF_V_SevEr), HD_V_SevEr), HF_W_SevEr), HD_W_SevEr), KID_TAU_SevEr)
+SC_H_SevEr <- union(union(union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_TS_SevEr), HD_TS_SevEr), KID_H_SevEr), DIP_W_SevEr), DIP_TS_SevEr)
+SC_LE_SevEr <- union(union(union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_H2O_SevEr), HD_H2O_SevEr), KID_LE_SevEr), DIP_W_SevEr), DIP_H2O_SevEr)
+SC_NEE_SevEr <- union(union(union(union(union(union(HF_W_SevEr, HD_W_SevEr), HF_CO2_SevEr), HD_CO2_SevEr), KID_NEE_SevEr), DIP_W_SevEr), DIP_CO2_SevEr)
+SC_TAU_SevEr <- union(union(union(union(union(union(union(union(HF_U_SevEr, HD_U_SevEr), HF_V_SevEr), HD_V_SevEr), HF_W_SevEr), HD_W_SevEr), KID_TAU_SevEr), DIP_U_SevEr), DIP_W_SevEr)
 
 
 HF_U_ModEr <- union(which(ec_data[,"HF5_u"]>SCTH1/2), which(ec_data[,"HF10_u"]>SCTH2/2))
@@ -279,10 +295,17 @@ HD_CO2_ModEr <- union(which(ec_data[,"HD5_co2"]>SCTH1/2), which(ec_data[,"HD10_c
 HF_H2O_ModEr <- union(which(ec_data[,"HF5_h2o"]>SCTH1/2), which(ec_data[,"HF10_h2o"]>SCTH2/2))
 HD_H2O_ModEr <- union(which(ec_data[,"HD5_h2o"]>SCTH1/2), which(ec_data[,"HD10_h2o"]>SCTH2/2))
 
-SC_H_ModEr <- union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_TS_ModEr), HD_TS_ModEr), KID_H_ModEr)
-SC_LE_ModEr <- union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_H2O_ModEr), HD_H2O_ModEr), KID_LE_ModEr)
-SC_NEE_ModEr <- union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_CO2_ModEr), HD_CO2_ModEr), KID_NEE_ModEr)
-SC_TAU_ModEr <- union(union(union(union(union(union(HF_U_ModEr, HD_U_ModEr), HF_V_ModEr), HD_V_ModEr), HF_W_ModEr), HD_W_ModEr), KID_TAU_ModEr)
+DIP_U_ModEr <- which(ec_data[,"DIP_u"] >= 0 & ec_data[,"DIP_u"] <= 0.1)
+DIP_V_ModEr <- which(ec_data[,"DIP_v"] >= 0 & ec_data[,"DIP_v"] <= 0.1)
+DIP_W_ModEr <- which(ec_data[,"DIP_w"] >= 0 & ec_data[,"DIP_w"] <= 0.1)
+DIP_TS_ModEr <- which(ec_data[,"DIP_ts"] >= 0 & ec_data[,"DIP_ts"] <= 0.1)
+DIP_CO2_ModEr <- which(ec_data[,"DIP_co2"] >= 0 & ec_data[,"DIP_co2"] <= 0.1)
+DIP_H2O_ModEr <- which(ec_data[,"DIP_h2o"] >= 0 & ec_data[,"DIP_h2o"] <= 0.1)
+
+SC_H_ModEr <- union(union(union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_TS_ModEr), HD_TS_ModEr), KID_H_ModEr), DIP_W_ModEr), DIP_TS_ModEr)
+SC_LE_ModEr <- union(union(union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_H2O_ModEr), HD_H2O_ModEr), KID_LE_ModEr), DIP_W_ModEr), DIP_H2O_ModEr)
+SC_NEE_ModEr <- union(union(union(union(union(union(HF_W_ModEr, HD_W_ModEr), HF_CO2_ModEr), HD_CO2_ModEr), KID_NEE_ModEr), DIP_W_ModEr), DIP_CO2_ModEr)
+SC_TAU_ModEr <- union(union(union(union(union(union(union(union(HF_U_ModEr, HD_U_ModEr), HF_V_ModEr), HD_V_ModEr), HF_W_ModEr), HD_W_ModEr), KID_TAU_ModEr), DIP_V_ModEr), DIP_W_ModEr)
 
 
 FOOTFLAG <- replace(zero_vector, union(union(HF_V_ModEr, HD_V_ModEr), KID_V_ModEr), 1)
@@ -783,10 +806,12 @@ set2exp <- data.frame(
 "U_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_u"]>SCTH1/2), 1), which(ec_data[,"HD5_u"]>SCTH1), 2), tau_ind_miss, NA)),
 "U_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_u"]/(hz*3*6),1), tau_ind_miss, NA)),
 "U_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_u"]>SCTH2/2), 1), which(ec_data[,"HD10_u"]>SCTH2), 2), tau_ind_miss, NA)),
-"U_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_u"],2), tau_ind_miss, NA)),
-"U_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_U_ModEr, 1), ACF_U_SevEr, 2), tau_ind_miss, NA)),
+"U_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_u"],2), tau_ind_miss, NA)),
+"U_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_U_ModEr, 1), AL1_U_SevEr, 2), tau_ind_miss, NA)),
 "U_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_u"],2), tau_ind_miss, NA)),
 "U_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_U_ModEr, 1), DDI_U_SevEr, 2), tau_ind_miss, NA)),
+"U_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_u"],2), tau_ind_miss, NA)),
+"U_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_U_ModEr, 1), DIP_U_SevEr, 2), tau_ind_miss, NA)),
 
 "V_HF5_STAT" = as.vector(replace(round(ec_data[,"HF5_v"]/(hz*3*6),1), tau_ind_miss, NA)),
 "V_HF5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HF5_v"]>SCTH1/2), 1), which(ec_data[,"HF5_v"]>SCTH1), 2), tau_ind_miss, NA)),
@@ -796,10 +821,12 @@ set2exp <- data.frame(
 "V_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_v"]>SCTH1/2), 1), which(ec_data[,"HD5_v"]>SCTH1), 2), tau_ind_miss, NA)),
 "V_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_v"]/(hz*3*6),1), tau_ind_miss, NA)),
 "V_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_v"]>SCTH2/2), 1), which(ec_data[,"HD10_v"]>SCTH2), 2), tau_ind_miss, NA)),
-"V_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_v"],2), tau_ind_miss, NA)),
-"V_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_V_ModEr, 1), ACF_V_SevEr, 2), tau_ind_miss, NA)),
+"V_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_v"],2), tau_ind_miss, NA)),
+"V_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_V_ModEr, 1), AL1_V_SevEr, 2), tau_ind_miss, NA)),
 "V_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_v"],2), tau_ind_miss, NA)),
 "V_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_V_ModEr, 1), DDI_V_SevEr, 2), tau_ind_miss, NA)),
+"V_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_v"],2), tau_ind_miss, NA)),
+"V_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_V_ModEr, 1), DIP_V_SevEr, 2), tau_ind_miss, NA)),
 
 "W_HF5_STAT" = as.vector(replace(round(ec_data[,"HF5_w"]/(hz*3*6),1), h_ind_miss, NA)),
 "W_HF5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HF5_w"]>SCTH1/2), 1), which(ec_data[,"HF5_w"]>SCTH1), 2), h_ind_miss, NA)),
@@ -809,10 +836,12 @@ set2exp <- data.frame(
 "W_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_w"]>SCTH1/2), 1), which(ec_data[,"HD5_w"]>SCTH1), 2), h_ind_miss, NA)),
 "W_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_w"]/(hz*3*6),1), h_ind_miss, NA)),
 "W_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_w"]>SCTH2/2), 1), which(ec_data[,"HD10_w"]>SCTH2), 2), h_ind_miss, NA)),
-"W_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_w"],2), h_ind_miss, NA)),
-"W_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_W_ModEr, 1), ACF_W_SevEr, 2), h_ind_miss, NA)),
+"W_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_w"],2), h_ind_miss, NA)),
+"W_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_W_ModEr, 1), AL1_W_SevEr, 2), h_ind_miss, NA)),
 "W_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_w"],2), h_ind_miss, NA)),
 "W_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_W_ModEr, 1), DDI_W_SevEr, 2), h_ind_miss, NA)),
+"W_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_w"],2), h_ind_miss, NA)),
+"W_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_W_ModEr, 1), DIP_W_SevEr, 2), h_ind_miss, NA)),
 
 "T_SONIC_HF5_STAT" = as.vector(replace(round(ec_data[,"HF5_ts"]/(hz*3*6),1), h_ind_miss, NA)),
 "T_SONIC_HF5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HF5_ts"]>SCTH1/2), 1), which(ec_data[,"HF5_ts"]>SCTH1), 2), h_ind_miss, NA)),
@@ -822,10 +851,12 @@ set2exp <- data.frame(
 "T_SONIC_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_ts"]>SCTH1/2), 1), which(ec_data[,"HD5_ts"]>SCTH1), 2), h_ind_miss, NA)),
 "T_SONIC_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_ts"]/(hz*3*6),1), h_ind_miss, NA)),
 "T_SONIC_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_ts"]>SCTH2/2), 1), which(ec_data[,"HD10_ts"]>SCTH2), 2), h_ind_miss, NA)),
-"T_SONIC_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_ts"],2), h_ind_miss, NA)),
-"T_SONIC_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_TS_ModEr, 1), ACF_TS_SevEr, 2), h_ind_miss, NA)),
+"T_SONIC_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_ts"],2), h_ind_miss, NA)),
+"T_SONIC_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_TS_ModEr, 1), AL1_TS_SevEr, 2), h_ind_miss, NA)),
 "T_SONIC_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_ts"],2), h_ind_miss, NA)),
 "T_SONIC_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_TS_ModEr, 1), DDI_TS_SevEr, 2), h_ind_miss, NA)),
+"T_SONIC_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_ts"],2), h_ind_miss, NA)),
+"T_SONIC_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_TS_ModEr, 1), DIP_TS_SevEr, 2), h_ind_miss, NA)),
 
 "H2O_HF5_STAT" = as.vector(replace(round(ec_data[,"HF5_h2o"]/(hz*3*6),1), le_ind_miss, NA)),
 "H2O_HF5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HF5_h2o"]>SCTH1/2), 1), which(ec_data[,"HF5_h2o"]>SCTH1), 2), le_ind_miss, NA)),
@@ -835,10 +866,12 @@ set2exp <- data.frame(
 "H2O_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_h2o"]>SCTH1/2), 1), which(ec_data[,"HD5_h2o"]>SCTH1), 2), le_ind_miss, NA)),
 "H2O_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_h2o"]/(hz*3*6),1), le_ind_miss, NA)),
 "H2O_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_h2o"]>SCTH2/2), 1), which(ec_data[,"HD10_h2o"]>SCTH2), 2), le_ind_miss, NA)),
-"H2O_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_h2o"],2), le_ind_miss, NA)),
-"H2O_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_H2O_ModEr, 1), ACF_H2O_SevEr, 2), le_ind_miss, NA)),
+"H2O_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_h2o"],2), le_ind_miss, NA)),
+"H2O_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_H2O_ModEr, 1), AL1_H2O_SevEr, 2), le_ind_miss, NA)),
 "H2O_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_h2o"],2), le_ind_miss, NA)),
 "H2O_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_H2O_ModEr, 1), DDI_H2O_SevEr, 2), le_ind_miss, NA)),
+"H2O_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_h2o"],2), le_ind_miss, NA)),
+"H2O_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_H2O_ModEr, 1), DIP_H2O_SevEr, 2), le_ind_miss, NA)),
 
 "CO2_HF5_STAT" = as.vector(replace(round(ec_data[,"HF5_co2"]/(hz*3*6),1), nee_ind_miss, NA)),
 "CO2_HF5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HF5_co2"]>SCTH1/2), 1), which(ec_data[,"HF5_co2"]>SCTH1), 2), nee_ind_miss, NA)),
@@ -848,23 +881,25 @@ set2exp <- data.frame(
 "CO2_HD5_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD5_co2"]>SCTH1/2), 1), which(ec_data[,"HD5_co2"]>SCTH1), 2), nee_ind_miss, NA)),
 "CO2_HD10_STAT" = as.vector(replace(round(ec_data[,"HD10_co2"]/(hz*3*6),1), nee_ind_miss, NA)),
 "CO2_HD10_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"HD10_co2"]>SCTH2/2), 1), which(ec_data[,"HD10_co2"]>SCTH2), 2), nee_ind_miss, NA)),
-"CO2_ACF_STAT" =as.vector(replace(round(ec_data[,"ACF_co2"],2), nee_ind_miss, NA)),
-"CO2_ACF_FLAG" = as.vector(replace(replace(replace(zero_vector, ACF_CO2_ModEr, 1), ACF_CO2_SevEr, 2), nee_ind_miss, NA)),
+"CO2_AL1_STAT" =as.vector(replace(round(ec_data[,"AL1_co2"],2), nee_ind_miss, NA)),
+"CO2_AL1_FLAG" = as.vector(replace(replace(replace(zero_vector, AL1_CO2_ModEr, 1), AL1_CO2_SevEr, 2), nee_ind_miss, NA)),
 "CO2_DDI_STAT" =as.vector(replace(round(ec_data[,"DDI_co2"],2), nee_ind_miss, NA)),
 "CO2_DDI_FLAG" = as.vector(replace(replace(replace(zero_vector, DDI_CO2_ModEr, 1), DDI_CO2_SevEr, 2), nee_ind_miss, NA)),
+"CO2_DIP_STAT" =as.vector(replace(round(ec_data[,"DIP_co2"],2), nee_ind_miss, NA)),
+"CO2_DIP_FLAG" = as.vector(replace(replace(replace(zero_vector, DIP_CO2_ModEr, 1), DIP_CO2_SevEr, 2), nee_ind_miss, NA)),
 
-"U_KID_STAT" = as.vector(replace(ec_data[,"KID1_u"], tau_ind_miss, NA)),
-"U_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_u"]>30), 1), which(ec_data[,"KID1_u"]>50), 2), tau_ind_miss, NA)),
-"V_KID_STAT" = as.vector(replace(ec_data[,"KID1_v"], tau_ind_miss, NA)),
-"V_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_v"]>30), 1), which(ec_data[,"KID1_v"]>50), 2), tau_ind_miss, NA)),
-"W_KID_STAT" = as.vector(replace(ec_data[,"KID1_w"], h_ind_miss, NA)),
-"W_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_w"]>30), 1), which(ec_data[,"KID1_w"]>50), 2), h_ind_miss, NA)),
-"T_SONIC_KID_STAT" = as.vector(replace(ec_data[,"KID1_ts"], h_ind_miss, NA)),
-"T_SONIC_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_ts"]>30), 1), which(ec_data[,"KID1_ts"]>50), 2), h_ind_miss, NA)),
-"H2O_KID_STAT" = as.vector(replace(ec_data[,"KID1_h2o"], le_ind_miss, NA)),
-"H2O_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_h2o"]>30), 1), which(ec_data[,"KID1_h2o"]>50), 2), le_ind_miss, NA)),
-"CO2_KID_STAT" = as.vector(replace(ec_data[,"KID1_co2"], nee_ind_miss, NA)),
-"CO2_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID1_co2"]>30), 1), which(ec_data[,"KID1_co2"]>50), 2), nee_ind_miss, NA)),
+"U_KID_STAT" = as.vector(replace(ec_data[,"KID_u"], tau_ind_miss, NA)),
+"U_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_u"]>30), 1), which(ec_data[,"KID_u"]>50), 2), tau_ind_miss, NA)),
+"V_KID_STAT" = as.vector(replace(ec_data[,"KID_v"], tau_ind_miss, NA)),
+"V_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_v"]>30), 1), which(ec_data[,"KID_v"]>50), 2), tau_ind_miss, NA)),
+"W_KID_STAT" = as.vector(replace(ec_data[,"KID_w"], h_ind_miss, NA)),
+"W_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_w"]>30), 1), which(ec_data[,"KID_w"]>50), 2), h_ind_miss, NA)),
+"T_SONIC_KID_STAT" = as.vector(replace(ec_data[,"KID_ts"], h_ind_miss, NA)),
+"T_SONIC_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_ts"]>30), 1), which(ec_data[,"KID_ts"]>50), 2), h_ind_miss, NA)),
+"H2O_KID_STAT" = as.vector(replace(ec_data[,"KID_h2o"], le_ind_miss, NA)),
+"H2O_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_h2o"]>30), 1), which(ec_data[,"KID_h2o"]>50), 2), le_ind_miss, NA)),
+"CO2_KID_STAT" = as.vector(replace(ec_data[,"KID_co2"], nee_ind_miss, NA)),
+"CO2_KID_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"KID_co2"]>30), 1), which(ec_data[,"KID_co2"]>50), 2), nee_ind_miss, NA)),
 
 "ITC_STAT" = as.vector(replace(ec_data[,"itc_w"], h_ind_miss, NA)),
 "ITC_FLAG" = as.vector(replace(replace(replace(zero_vector, which(ec_data[,"itc_w"]>30), 1), which(ec_data[,"itc_w"]>100), 2), h_ind_miss, NA)),
