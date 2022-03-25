@@ -13,7 +13,7 @@ citation("RFlux")
 
 Domenico Vitale, Dario Papale and ICOS-ETC Team (2021)
 RFlux: An R Package for Processing and Cleaning Eddy Covariance Flux Measurements
-R package version 3.1.0
+R package version 3.2.0
 
 A BibTeX entry for LaTeX users is
 
@@ -22,8 +22,8 @@ A BibTeX entry for LaTeX users is
     author = {Domenico Vitale and Dario Papale and {ICOS-ETC Team}},
     organization = {ICOS-ETC},
     address = {Viterbo, Italy},
-    year = {2021},
-    note = {R package version 3.1.0},
+    year = {2022},
+    note = {R package version 3.2.0},
     url = {https://github.com/icos-etc/RFlux},
   }
 
