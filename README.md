@@ -28,6 +28,8 @@ A BibTeX entry for LaTeX users is
   }
 
 library(RFlux)
+help(RFlux)
+ls("package:RFlux")
 ```
 
 
