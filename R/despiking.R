@@ -50,7 +50,8 @@ despiking <- function(x, mfreq, variant, wsignal, wscale, wby=1, zth=5, alpha=0.
 					ind_window_end <- spike_tmp[i]+(wsignal-1)/2;
 					TSw <- TS[ind_window_start:ind_window_end];
 					signal <- hybrid.filter(TSw, width=wsignal, method=c("MED", "RM", "MH", "MMH", "PRMH", "PRMMH"));		
-					res0 <- as.vector(TSw-signal$level)[(wsignal+1)/2,];
+					level <- apply(signal$level, MARGIN=1, FUN="mean")
+					res0 <- as.vector(TSw-level)[(wsignal+1)/2,];
 					ind <- which.min(abs(res0));
 					res <- res0[ind];
 					if(abs(res) > th_local[spike_tmp[i]]) {spike_index <- c(spike_index, spike_tmp[i])}
