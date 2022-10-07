@@ -3,7 +3,7 @@ inst_prob_test <- function(x, detrend=FALSE, hz=c(10,20), plot=FALSE, var_name=c
 
 ifelse(length(x)>20000, nl <- 36000, nl <- 18000)
 
-ifelse(detrend==FALSE, flucts <- x - mean(x, na.rm=TRUE), flucts <- detrend(na.omit(na.approx(x)))) 
+ifelse(detrend==FALSE, flucts <- x - mean(x, na.rm=TRUE), flucts <- detrend(as.vector(na.omit(na.approx(x))))) 
 sigma_f <- max(0.01, Qn(na.omit(flucts)))
 HF5 <- length(which(abs(flucts)>5*sigma_f))
 HF10 <- length(which(abs(flucts)>10*sigma_f))
@@ -14,8 +14,8 @@ x_r <- replace(x, ind+1, NA)
 d1 <- diff(x_r)
 ifelse((length(na.omit(d1)) > 1000),{sigma_d <- max(0.01, Qn(na.omit(d1))); HD5 <- length(which(abs(d0)>5*sigma_d)); HD10 <- length(which(abs(d0)>10*sigma_d))}, {HD5 <- NA; HD10 <- NA})
 
-K_VM97 <- as.numeric(3+kurtosis(detrend(na.omit(x)), na.rm=TRUE))
-S_VM97 <- as.numeric(skewness(detrend(na.omit(x)), na.rm=TRUE))
+K_VM97 <- as.numeric(3+kurtosis(detrend(as.vector(na.omit(x))), na.rm=TRUE))
+S_VM97 <- as.numeric(skewness(detrend(as.vector(na.omit(x))), na.rm=TRUE))
 KID0 <- as.numeric(3+kurtosis(d0, na.rm=TRUE))
 KID <- as.numeric(3+kurtosis(diff(na.omit(x_r)), na.rm=TRUE))
 
