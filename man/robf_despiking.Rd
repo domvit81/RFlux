@@ -5,7 +5,7 @@
 \description{
 A parallel implementation of robust functionals for despiking high-frequency eddy covariance raw data}
 \usage{
-parallel_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, zth = 5)
+robf_despiking(x, mfreq, wsignal = mfreq*30+1, wscale=mfreq*30+1, wby = 1, zth = 5)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
