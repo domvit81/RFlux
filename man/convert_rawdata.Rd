@@ -9,16 +9,16 @@ Converting a generic ASCII raw data file in a format suitable for RFlux package
 convert_rawdata(
 file_path_in,
 file_path_out, 
-info_U=list(NULL,NULL,1,0), 
-info_V=list(NULL,NULL,1,0),
-info_W=list(NULL,NULL,1,0),
-info_T_SONIC=list(NULL,NULL,1,0),
-info_CO2=list(NULL,NULL,1,0),
-info_H2O=list(NULL,NULL,1,0),
-info_T_CELL=list(NULL,NULL,1,0),
-info_T_CELL_IN=list(NULL,NULL,1,0),
-info_T_CELL_OUT=list(NULL,NULL,1,0), 
-info_PRESS_CELL=list(NULL,NULL,1,0), 
+info_U=list(NULL,NULL,0,1,0), 
+info_V=list(NULL,NULL,0,1,0),
+info_W=list(NULL,NULL,0,1,0),
+info_T_SONIC=list(NULL,NULL,0,1,0),
+info_CO2=list(NULL,NULL,0,1,0),
+info_H2O=list(NULL,NULL,0,1,0),
+info_T_CELL=list(NULL,NULL,0,1,0),
+info_T_CELL_IN=list(NULL,NULL,0,1,0),
+info_T_CELL_OUT=list(NULL,NULL,0,1,0), 
+info_PRESS_CELL=list(NULL,NULL,0,1,0), 
 info_SA_DIAG=NULL, 
 info_GA_DIAG=NULL, 
 na.strings, 
@@ -39,34 +39,34 @@ labels=NULL)
   path where converted raw data file will be stored.
 	}
 	\item{info_U}{
-	a list of 4 elements denoting the column position (integer) of the horizontal U wind component, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of the horizontal U wind component; its units (character string, see details); the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_V}{
-	a list of 4 elements denoting the column position (integer) of the horizontal V wind component, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of the horizontal V wind component; its units (character string, see details); the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_W}{
-	a list of 4 elements denoting the column position (integer) of the vertical W wind component, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of the horizontal W wind component; its units (character string, see details); the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_T_SONIC}{
-	a list of 4 elements denoting the column position (integer) of the sonic temperature, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of the sonic temperature; its units (character string, see details); the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_CO2}{
-	a list of 4 elements denoting the column position (integer) of CO2 concentration, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of CO2 concentration, its units (character string, see details), the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_H2O}{
-	a list of 4 elements denoting the column position (integer) of the H2O concentration, its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of the H2O concentration, its units (character string, see details), the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_T_CELL}{
-	a list of 4 elements denoting the column position (integer) of cell temperature (only for EC closed path systems), its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of cell temperature (only for EC closed path systems), its units (character string, see details), the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_T_CELL_IN}{
-	a list of 4 elements denoting the column position (integer) of in-cell temperature (only for EC closed path systems), its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of in-cell temperature (only for EC closed path systems), its units (character string, see details), the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_T_CELL_OUT}{
-	a list of 4 elements denoting the column position (integer) of out-cell temperature (only for EC closed path systems), its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting: the column position (integer) of out-cell temperature (only for EC closed path systems), its units (character string, see details),the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_PRESS_CELL}{
-	a list of 4 elements denoting the column position (integer) of cell pressure (only for EC closed path systems), its units (character string, see details), the multiplier and the offset (1 and 0, respectively, in case no linear conversion should be applied).
+	a list of 5 elements denoting the column position (integer) of cell pressure (only for EC closed path systems), its units (character string, see details), the offset (default 0), the linear (default 1) and quadratic (default 0) multipliers to be used for conversion from electrical output (say voltage) to physical units. By default, no conversion is applied.
 	}
 	\item{info_SA_DIAG}{
 	integer. Column position of the sonic anemometer diagnostics.
@@ -103,15 +103,15 @@ labels=NULL)
 Possible units specification in the info_XX field are one among:
 mm s-1, cm s-1, m s-1 for U, V, W wind components;
 K, C for sonic temperature (T_SONIC) and cell temperatures (T_CELL, T_CELL_IN, T_CELL_OUT);
-ppt, ppm, ppb, umol m-3, mmol m-3, ug m-3, mg m-3, g m-3 for CO2, H2O concentration variables;
-Pa, hPa, KPa for cell pressure (PRESS_CELL).
-The multiplier and the offset values in info_XX field aim at converting data expressed in Volt in their physical units. They must be set equals to 1 and 0, respectively, in case no (linear) conversion is required.
+ppt, ppm, ppb, mmol m-3, umol m-3, nmol m-3, ug m-3, mg m-3, g m-3 for CO2, H2O concentration variables;
+Pa, hPa, kPa for cell pressure (PRESS_CELL).
+The multipliers and the offset values in info_XX field aim at converting data expressed in Volt in their physical units.
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-A .csv file stored in the file_path_out containing the following variables: U (m s-1), V (m s-1), W (m s-1), T_SONIC (K), CO2 (mmol m-3 in case of molar density, umol/mol (ppm) in case of molar fraction/mixing ratio), H2O (mmol m-3 in case of molar density, mmol/mol (ppt) in case of molar fraction/mixing ratio), SA_DIAG (dimensionless), GA_DIAG (dimensionless), T_CELL (C), T_CELL_IN (C), T_CELL_OUT (C), PRESS_CELL (KPa). Missing values are denoted by "-9999".
+A .csv file stored in the file_path_out containing the following variables: U (m s-1), V (m s-1), W (m s-1), T_SONIC (K), CO2 (mmol m-3 in case of molar density, umol/mol (ppm) in case of molar fraction/mixing ratio), H2O (mmol m-3 in case of molar density, mmol/mol (ppt) in case of molar fraction/mixing ratio), SA_DIAG (dimensionless), GA_DIAG (dimensionless), T_CELL (C), T_CELL_IN (C), T_CELL_OUT (C), PRESS_CELL (kPa). Missing values are denoted by "-9999".
 }
 
 \author{
