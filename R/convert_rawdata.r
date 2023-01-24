@@ -62,12 +62,12 @@ convert_rawdata <- function(
 
 	##CO2 molar density in mmol m-3, CO2 molar fraction in umol/mol (ppm), CO2 mixing ratio in umol/mol (ppm)
 	if(!is.null(info_CO2[[1]])){
-	if(info_CO2[[2]]=="mmol m-3" | info_CO2[[2]]=="ppt") CO2 <- info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]];
-	if(info_CO2[[2]]=="umol m-3" | info_CO2[[2]]=="ppm") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])/10^3;
-	if(info_CO2[[2]]=="nmol m-3" | info_CO2[[2]]=="ppb") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^6;
+	if(info_CO2[[2]]=="mmol m-3" | info_CO2[[2]]=="ppt") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^3;
+	if(info_CO2[[2]]=="umol m-3" | info_CO2[[2]]=="ppm") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]]);
+	if(info_CO2[[2]]=="nmol m-3" | info_CO2[[2]]=="ppb") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^(-3);
 	if(info_CO2[[2]]=="g m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^3/molw_co2;
 	if(info_CO2[[2]]=="mg m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])/molw_co2;
-	if(info_CO2[[2]]=="ug m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^-3/molw_co2
+	if(info_CO2[[2]]=="ug m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^(-3)/molw_co2
 	}
 	if(is.null(info_CO2[[1]])) CO2 <- rep(NA, nrow(data_orig))
 
@@ -76,9 +76,9 @@ convert_rawdata <- function(
 	if(info_H2O[[2]]=="mmol m-3" | info_H2O[[2]]=="ppt") H2O <- info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]];
 	if(info_H2O[[2]]=="umol m-3" | info_H2O[[2]]=="ppm") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/10^3;
 	if(info_H2O[[2]]=="nmol m-3" | info_H2O[[2]]=="ppb") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/10^6;
-	if(info_H2O[[2]]=="g m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^3/molw_h2o;
-	if(info_H2O[[2]]=="mg m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o;
-	if(info_H2O[[2]]=="ug m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^-3/molw_h2o
+	if(info_H2O[[2]]=="g m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*molw_h2o;
+	if(info_H2O[[2]]=="mg m-3") H2O <- (24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o)*10^(-3);
+	if(info_H2O[[2]]=="ug m-3") H2O <- (24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o)*10^(-6)
 	}
 	if(is.null(info_H2O[[1]])) H2O <- rep(NA, nrow(data_orig))
 
@@ -94,28 +94,28 @@ convert_rawdata <- function(
 
 	#T_CELL - output in degree Celsius
 	if(!is.null(info_T_CELL[[1]])){
-	if(info_T_CELL[[2]]=="C") T_CELL <- data_orig[,info_T_CELL[[1]]]*info_T_CELL[[3]]+info_T_CELL[[4]];
-	if(info_T_CELL[[2]]=="K")  T_CELL <- (data_orig[,info_T_CELL[[1]]]*info_T_CELL[[3]]+info_T_CELL[[4]])-273.15
+	if(info_T_CELL[[2]]=="C") T_CELL <- info_T_CELL[[3]] + data_orig[,info_T_CELL[[1]]]*info_T_CELL[[4]]+data_orig[,info_T_CELL[[1]]]*info_T_CELL[[5]];
+	if(info_T_CELL[[2]]=="K") T_CELL <- (info_T_CELL[[3]] + data_orig[,info_T_CELL[[1]]]*info_T_CELL[[4]]+data_orig[,info_T_CELL[[1]]]*info_T_CELL[[5]])-273.15
 	}
 	if(is.null(info_T_CELL[[1]])) T_CELL <- rep(NA, nrow(data_orig))
 
 	if(!is.null(info_T_CELL_IN[[1]])){
-	if(info_T_CELL_IN[[2]]=="C")  T_CELL_IN <- data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[3]]+info_T_CELL_IN[[4]];
-	if(info_T_CELL_IN[[2]]=="K") T_CELL_IN <- (data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[3]]+info_T_CELL_IN[[4]])-273.15
+	if(info_T_CELL_IN[[2]]=="C")  T_CELL_IN <- info_T_CELL_IN[[3]] + data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[4]]+data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[5]];
+	if(info_T_CELL_IN[[2]]=="K") T_CELL_IN <- (info_T_CELL_IN[[3]] + data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[4]]+data_orig[,info_T_CELL_IN[[1]]]*info_T_CELL_IN[[5]])-273.15
 	}
 	if(is.null(info_T_CELL_IN[[1]])) T_CELL_IN <- rep(NA, nrow(data_orig))
 	
 	if(!is.null(info_T_CELL_OUT[[1]])){
-	if(info_T_CELL_OUT[[2]]=="C")  T_CELL_OUT <- data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[3]]+info_T_CELL_OUT[[4]];
-	if(info_T_CELL_OUT[[2]]=="K") T_CELL_OUT <- (data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[3]]+info_T_CELL_OUT[[4]])-273.15
+	if(info_T_CELL_OUT[[2]]=="C")  T_CELL_OUT <- info_T_CELL_OUT[[3]] + data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[4]]+ data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[5]];
+	if(info_T_CELL_OUT[[2]]=="K") T_CELL_OUT <- (info_T_CELL_OUT[[3]] + data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[4]]+ data_orig[,info_T_CELL_OUT[[1]]]*info_T_CELL_OUT[[5]])-273.15
 	}
 	if(is.null(info_T_CELL_OUT[[1]])) T_CELL_OUT <- rep(NA, nrow(data_orig))
 	
 	#PRESS_CELL - output in kPa
 	if(!is.null(info_PRESS_CELL[[1]])){
-	if(info_PRESS_CELL[[2]]=="kPa") PRESS_CELL <- data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[3]]+info_PRESS_CELL[[4]];
-	if(info_PRESS_CELL[[2]]=="Pa")  PRESS_CELL <- (data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[3]]+info_PRESS_CELL[[4]])/10^3;
-	if(info_PRESS_CELL[[2]]=="hPa")  PRESS_CELL <- (data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[3]]+info_PRESS_CELL[[4]])/10
+	if(info_PRESS_CELL[[2]]=="kPa") PRESS_CELL <- info_PRESS_CELL[[3]]+data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[4]] + data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[5]];
+	if(info_PRESS_CELL[[2]]=="Pa")  PRESS_CELL <- (info_PRESS_CELL[[3]]+data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[4]] + data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[5]])/10^3;
+	if(info_PRESS_CELL[[2]]=="hPa")  PRESS_CELL <- (info_PRESS_CELL[[3]]+data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[4]] + data_orig[,info_PRESS_CELL[[1]]]*info_PRESS_CELL[[5]])/10
 	}
 	if(is.null(info_PRESS_CELL[[1]])) PRESS_CELL <- rep(NA, nrow(data_orig))
 
