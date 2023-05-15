@@ -60,25 +60,31 @@ convert_rawdata <- function(
 	}
 	if(is.null(info_T_SONIC[[1]])) T_SONIC <- rep(NA, nrow(data_orig))
 
-	##CO2 molar density in mmol m-3, CO2 molar fraction in umol/mol (ppm), CO2 mixing ratio in umol/mol (ppm)
+	##Following ICOS-ETC Instructions: CO2 molar density in mmol m-3, CO2 molar fraction in umol/mol (ppm), CO2 mixing ratio in umol/mol (ppm), CO2 mass density in mg/m3
 	if(!is.null(info_CO2[[1]])){
-	if(info_CO2[[2]]=="mmol m-3" | info_CO2[[2]]=="ppt") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^3;
-	if(info_CO2[[2]]=="umol m-3" | info_CO2[[2]]=="ppm") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]]);
-	if(info_CO2[[2]]=="nmol m-3" | info_CO2[[2]]=="ppb") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^(-3);
-	if(info_CO2[[2]]=="g m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^3/molw_co2;
+	if(info_CO2[[2]]=="mmol m-3") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]]);
+	if(info_CO2[[2]]=="umol m-3") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^-3;
+	if(info_CO2[[2]]=="nmol m-3") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^-6;
+	if(info_CO2[[2]]=="ppt") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^3;
+	if(info_CO2[[2]]=="ppm") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]]);
+	if(info_CO2[[2]]=="ppb") CO2 <- (info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^-3;
+	if(info_CO2[[2]]== "g m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])/molw_co2*10^3;
 	if(info_CO2[[2]]=="mg m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])/molw_co2;
-	if(info_CO2[[2]]=="ug m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])*10^(-3)/molw_co2
+	if(info_CO2[[2]]=="ug m-3") CO2 <- 24.45*(info_CO2[[3]] + data_orig[,info_CO2[[1]]]*info_CO2[[4]]+data_orig[,info_CO2[[1]]]^2*info_CO2[[5]])/molw_co2*10^-3
 	}
 	if(is.null(info_CO2[[1]])) CO2 <- rep(NA, nrow(data_orig))
 
-	##H2O molar density in mmol m-3, H2O molar fraction in mmol/mol (ppt), H2O mixing ratio in mmol/mol (ppt)
+	##Following ICOS-ETC Instructions: H2O molar density in mmol m-3, H2O molar fraction in mmol/mol (ppt), H2O mixing ratio in mmol/mol (ppt), H2O mass density in g/m3
 	if(!is.null(info_H2O[[1]])){
-	if(info_H2O[[2]]=="mmol m-3" | info_H2O[[2]]=="ppt") H2O <- info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]];
-	if(info_H2O[[2]]=="umol m-3" | info_H2O[[2]]=="ppm") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/10^3;
-	if(info_H2O[[2]]=="nmol m-3" | info_H2O[[2]]=="ppb") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/10^6;
-	if(info_H2O[[2]]=="g m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*molw_h2o;
-	if(info_H2O[[2]]=="mg m-3") H2O <- (24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o)*10^(-3);
-	if(info_H2O[[2]]=="ug m-3") H2O <- (24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o)*10^(-6)
+	if(info_H2O[[2]]=="mmol m-3") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]]);
+	if(info_H2O[[2]]=="umol m-3") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^-3;
+	if(info_H2O[[2]]=="nmol m-3") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^-6;
+	if(info_H2O[[2]]=="ppt") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]]);
+	if(info_H2O[[2]]=="ppm") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^-3;
+	if(info_H2O[[2]]=="ppb") H2O <- (info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])*10^-6;
+	if(info_H2O[[2]]=="g m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o;
+	if(info_H2O[[2]]=="mg m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o*10^-3;
+	if(info_H2O[[2]]=="ug m-3") H2O <- 24.45*(info_H2O[[3]] + data_orig[,info_H2O[[1]]]*info_H2O[[4]]+data_orig[,info_H2O[[1]]]^2*info_H2O[[5]])/molw_h2o*10^-6
 	}
 	if(is.null(info_H2O[[1]])) H2O <- rep(NA, nrow(data_orig))
 
