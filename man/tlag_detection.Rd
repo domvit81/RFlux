@@ -70,7 +70,7 @@ tlag_detection(scalar_var,
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-A list containing the following components:
+A list containing the following components (to update):
   \item{ccf}{Output from the ccf function on the prewhitened data.}
   \item{ar}{The AR model fit to the x-series, or x.model if it is provided.}
   \item{opt_tlag }{Optimal time lag detected (timestep).}
