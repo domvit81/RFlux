@@ -7,22 +7,35 @@ Time-lag detection
 \description{
 Optimal time-lag detection by means of the pre-whitening procedure.}
 \usage{
-tlag_detection(x, y, mfreq, x.model = ar.res, 
-               AIC = FALSE, LAG.MAX = mfreq*10,
-               show.plot = FALSE)
+tlag_detection(scalar_var, 
+               tsonic_var, 
+               w_var,
+               mfreq, 
+               model = "ar", 
+               AIC=TRUE, 
+               method=c("pearson", "spearman", "boot"), 
+               LAG.MAX=mfreq*10, 
+               j=100, 
+               Rboot, 
+               cM, 
+               plot.it=FALSE,
+               ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-  first component series (e.g. CO2 concentrations).
+  \item{scalar_var}{
+  scalar atmospheric concentration variable (e.g. CO2 concentrations).
   }
-  \item{y}{
-  second component series (e.g. vertical wind speed).
+  \item{tsonic_var}{
+  sonic temperature variable.
+  }
+  \item{w_var}{
+  vertical wind speed component variable.
   }
   \item{mfreq}{
   acquisition frequency.
   }
-  \item{x.model}{
+  \item{model}{
   an ARIMA model; if provided, it is used to prewhiten both series.
   Otherwise, an AR model is fitted to the x-series and used to pre-whiten
   both series.
@@ -33,10 +46,23 @@ tlag_detection(x, y, mfreq, x.model = ar.res,
   AR model is chosen as 10*log10(N) where N is the number of observations.
   Default is FALSE.
   }
+  }
+  \item{method}{
+  type of correlation estimation: pearson, spearman, boot.
+  }
   \item{LAG.MAX}{
   maximum lag at which to calculate the ccf. Default is 10 seconds.
   }
-  \item{show.plot}{
+  \item{j}{
+  window width of the block bootstrap procedure.
+  }
+  \item{Rboot}{
+  number of bootstrapped samples.
+  }
+  \item{cM}{
+  credibility mass interval (e.g. 0.5).
+  }
+  \item{plot.it}{
   Logical. If TRUE, the CCFs will be displayed (default FALSE).
   }
 }
@@ -81,34 +107,11 @@ N <- nrow(rawdata)
 timestamp_orig <- strptime("0000.00", format="\%H\%M.\%OS", tz="GMT") + seq(1, N, 1);
 data.xts <- xts(rawdata, order.by=timestamp_orig);
 
-## Detecting time lag betweem H2O and vertical wind speed (W) by using an AR model (default)
-tlag_h2o_out <- tlag_detection(x=rawdata$H2O, y=rawdata$W, mfreq=20, 
-                               show.plot=TRUE)
-tlag_h2o_out$opt_tlag
-tlag_h2o_out$corr_est
-
-## Detecting time lag between CO2 and Sonic Temperature by using an ARIMA model
-mod <- auto.arima(rawdata$CO2, stationary=FALSE)
-tlag_co2_out <- tlag_detection(x=rawdata$CO2, y=rawdata$T_SONIC, mfreq=20, 
-                               show.plot=TRUE, x.model=mod)
-tlag_co2_out$opt_tlag
-tlag_co2_out$corr_est
-
-## Time series alignment
-tlag_co2 <- tlag_co2_out$opt_tlag
-tlag_h2o <- tlag_h2o_out$opt_tlag
-timestamp_co2 <- strptime("0000.00", format="\%H\%M.\%OS", tz="GMT") +
-                 seq(-tlag_co2+1, N - tlag_co2, 1);
-timestamp_h2o <- strptime("0000.00", format="\%H\%M.\%OS", tz="GMT") +
-                 seq(-tlag_h2o+1, N - tlag_h2o, 1);
-
-co2s <- xts(rawdata$CO2, order.by=timestamp_co2);
-h2os <- xts(rawdata$H2O, order.by=timestamp_h2o);
-rawdata_aligned <- na.omit(data.frame(merge(data.xts[,c(1:4)], 
-                  co2s, h2os, data.xts[,c(7:12)], tzone="GMT")));
-colnames(rawdata_aligned) <- c("U", "V", "W", "T_SONIC", "CO2", "H2O", 
-                               "SA_DIAG", "GA_DIAG", 
-                               "T_CELL", "T_CELL_IN", "T_CELL_OUT", "PRESS_CELL")
+## Detecting time lag betweem CO2 and vertical wind speed (W) by using an AR model (default)
+tlag_co2_out <- tlag_detection(scalar_var=rawdata$CO2, tsonic_var=rawdata$TSONIC, w_var=rawdata$W,
+                               model="ar", method="boot", mfreq=20, Rboot=29, cM=.5, j=100,
+                               plot.it=TRUE)
+tlag_co2_out$tlag_ref
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
