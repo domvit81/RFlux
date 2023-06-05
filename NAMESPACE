@@ -41,3 +41,7 @@ importFrom("gtools", "odd")
 importFrom("tools", "file_ext")
 importFrom("diptest", "dip.test")
 importFrom("forecast", "Acf")
+importFrom("bayestestR", "map_estimate")
+importFrom("HDInterval", "hdi")
+importFrom("boot", "tsboot")
+
