@@ -44,4 +44,6 @@ importFrom("forecast", "Acf")
 importFrom("bayestestR", "map_estimate")
 importFrom("HDInterval", "hdi")
 importFrom("boot", "tsboot")
+importFrom("egcm", "bvr.test")
+
 
