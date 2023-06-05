@@ -108,7 +108,7 @@ timestamp_orig <- strptime("0000.00", format="\%H\%M.\%OS", tz="GMT") + seq(1, N
 data.xts <- xts(rawdata, order.by=timestamp_orig);
 
 ## Detecting time lag betweem CO2 and vertical wind speed (W) by using an AR model (default)
-tlag_co2_out <- tlag_detection(scalar_var=rawdata$CO2, tsonic_var=rawdata$TSONIC, w_var=rawdata$W,
+tlag_co2_out <- tlag_detection(scalar_var=rawdata$CO2, tsonic_var=rawdata$T_SONIC, w_var=rawdata$W,
                                model="ar", method="boot", mfreq=20, Rboot=29, cM=.5, j=100,
                                plot.it=TRUE)
 tlag_co2_out$tlag_ref
