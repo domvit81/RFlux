@@ -14,7 +14,7 @@ tlag_detection(scalar_var,
                model = "ar", 
                LAG.MAX=mfreq*10,
                lws=0,
-               ups=5,
+               uws=5,
                Rboot, 
                plot.it=FALSE,
                ...)
@@ -42,10 +42,10 @@ tlag_detection(scalar_var,
   maximum lag at which to calculate the ccf. Default is 10 seconds.
   }
   \item{lws}{
-  (optional) lower limit of the time lag search window for the maximum covariance approach.
+  (optional) lower limit of the time lag search window (in sec) for the maximum covariance approach. Default 0 sec.
   }
   \item{uws}{
-  (optional) upper limit of the time lag search window for the maximum covariance approach.
+  (optional) upper limit of the time lag search window (in sec) for the maximum covariance approach. Default 5 sec.
   }
   \item{Rboot}{
   number of bootstrapped samples.
