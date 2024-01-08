@@ -59,15 +59,24 @@ tlag_detection(scalar_var,
 }
 \value{
 A list containing the following components (to update):
-  \item{ccf}{Output from the ccf function on the prewhitened data.}
-  \item{ar}{The AR model fit to the x-series, or x.model if it is provided.}
-  \item{opt_tlag }{Optimal time lag detected (timestep).}
-  \item{tlag_pw }{Time lag of the main peak of the cross-correlation function after pre-whitening.}
-  \item{tlag_lmax }{Local maxima of the cross-covariance function closest to tlag_pw.}
-  \item{tlag_lmin }{Local minima of the cross-covariance function closest to tlag_pw.}
-  \item{corr_est }{Estimated correlation at .}
-  \item{cv1pct }{Critical (abs) value of the ccf at 0.01 level.}
-  \item{cv5pct }{Critical (abs) value of the ccf at 0.05 level.}
+
+\item{mcw}{Detected time lag (sec) by maximum covariance using vertical wind speed (MCW).},
+\item{mct}{Detected time lag (sec) by maximum covariance using sonic temperature (MCT).},
+\item{mcw_win}{Detected time lag (sec) by maximum covariance using vertical wind speed in a restricted temporal window (MCWw).},
+\item{mct_win}{Detected time lag (sec) by maximum covariance using sonic temperature in a selected temporal window (MCTw).},
+\item{pww}{Detected time lag (sec) by pre-whitening using vertical wind speed (PWW).},
+\item{pwt}{Detected time lag (sec) by pre-whitening using sonic temperature (PWT).},  
+\item{pwb}{Detected time lag (sec) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).},
+\item{cor_pww}{Correlation estimate of the peak of PWW.},
+\item{cor_pwt}{Correlation estimate of the peak of PWT.},
+\item{cor_pwb}{Correlation estimate of the peak of PWB.},
+\item{cov_mcw}{Covariance estimate of the peak of MCW.},
+\item{cov_mct}{Covariance estimate of the peak of MCT.},
+\item{cov_mcw_win}{Covariance estimate of the peak of MCWw.},
+\item{cov_mct_win}{Covariance estimate of the peak of MCTw.},
+\item{cov_pww}{Covariance estimate of the peak of PWW.},
+\item{cov_pwt}{Covariance estimate of the peak of PWT.},
+\item{cov_pwb}{Covariance estimate of the peak of PWB.} 
 }
 \references{
 Vitale et al. (in prep) Optimal Time Lag Detection for Eddy Covariance Data Acquisition Systems%% ~put references to the literature/web site here ~
@@ -97,7 +106,7 @@ data.xts <- xts(rawdata, order.by=timestamp_orig);
 
 ## Detecting time lag betweem CO2 and vertical wind speed (W) by using an AR model (default)
 tlag_co2_out <- tlag_detection(scalar_var=rawdata$CO2, tsonic_var=rawdata$T_SONIC, w_var=rawdata$W,
-                               model="ar", method="boot", mfreq=20, Rboot=29, cM=.5, j=100,
+                               model="ar", mfreq=20, lws=0, uws=5, Rboot=29,
                                plot.it=TRUE)
 tlag_co2_out$tlag_ref
 }
