@@ -35,30 +35,20 @@ tlag_detection(scalar_var,
   }
   \item{model}{
   an ARIMA model; if provided, it is used to prewhiten both series.
-  Otherwise, an AR model is fitted to the x-series and used to pre-whiten
+  Otherwise, an AR(p) model (the p order is selected by AIC) is fitted to the x-series and used to pre-whiten
   both series.
-  }
-  \item{AIC}{
-  Logical. If an AR model is used for prewhitening, the AR order is chosen
-  by minimizing the Akaike Information Criteria (AIC=TRUE), otherwise the
-  AR model is chosen as 10*log10(N) where N is the number of observations.
-  Default is FALSE.
-  }
-  }
-  \item{method}{
-  type of correlation estimation: pearson, spearman, boot.
   }
   \item{LAG.MAX}{
   maximum lag at which to calculate the ccf. Default is 10 seconds.
   }
-  \item{j}{
-  window width of the block bootstrap procedure.
+  \item{lws}{
+  (optional) lower limit of the time lag search window for the maximum covariance approach.
+  }
+  \item{uws}{
+  (optional) upper limit of the time lag search window for the maximum covariance approach.
   }
   \item{Rboot}{
   number of bootstrapped samples.
-  }
-  \item{cM}{
-  credibility mass interval (e.g. 0.5).
   }
   \item{plot.it}{
   Logical. If TRUE, the CCFs will be displayed (default FALSE).
