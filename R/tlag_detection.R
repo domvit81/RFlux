@@ -18,9 +18,6 @@ if(mfreq==10) wdt <- 5
 
 
 	set <- na.omit(cbind(na.approx(scalar_var, na.rm=FALSE), na.approx(tsonic_var, na.rm=FALSE), na.approx(w_var, na.rm=FALSE)))
-    #kid_w <- kurtosis(diff(set[,3]), na.rm=TRUE)
-    #kid_ts <- kurtosis(diff(set[,2]), na.rm=TRUE)
-    #kid_c <- kurtosis(diff(set[,1]), na.rm=TRUE)
     
     
 	if (model=="ar"){
@@ -161,16 +158,6 @@ if(mfreq==10) wdt <- 5
 	
 	cov_pwb <- ccf_mcw[peak_ref]
 
-
-	#hdi_ind <- which.min(c(diff(hdis_ct), diff(hdis_cw), diff(hdis_tc), diff(hdis_wc)))
-	#if (hdi_ind==1) hdi_min <- as.vector(hdis_ct) + c(-5,5)
-	#if (hdi_ind==2) hdi_min <- as.vector(hdis_cw) + c(-5,5)
-	#if (hdi_ind==3) hdi_min <- as.vector(hdis_tc) + c(-5,5)
-	#if (hdi_ind==4) hdi_min <- as.vector(hdis_wc) + c(-5,5)
-#	hdi_min <- HDInterval::hdi(c(ccfs_ct1, ccfs_tc1, ccfs_wc1, ccfs_cw1), credMass=.5)
-#	hdi_min <- HDInterval::hdi(c(ccfs_ct1, ccfs_tc1), credMass=.95)
-	#peak_ref_pw <- which.max(abs(ccf_pww[hdi_min[1] : hdi_min[2]])) + hdi_min[1] - 1
-
     corr_est_s2 <- c(ccfs_ct[maps2[1]], ccfs_cw[maps2[2]], ccfs_tc[maps2[3]], ccfs_wc[maps2[4]]) 
     corr_ind2 <- which.max(abs(corr_est_s2))
     corr_max2 <- corr_est_s2[corr_ind2]
@@ -205,7 +192,6 @@ if(mfreq==10) wdt <- 5
 	if (peak_ind==3) CRIN <- cred_win_tc
 	if (peak_ind==4) CRIN <- cred_win_wc
  
-	#peak_ref <- which.max(abs(cross_cov_w)[CRIN]) + CRIN[1] - 1
 
 	local_max <- function(x) which(x - shift(x, 1) > 0 & x - shift(x, 1, type='lead') > 0)
 	#local_min <- function(x) which(x - shift(x, 1) < 0  & x - shift(x, 1, type='lead') < 0) 
