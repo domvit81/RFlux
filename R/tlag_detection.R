@@ -71,8 +71,8 @@ if(mfreq==10) wdt <- 5
 	
     
 ## Maximum Covariance Procedure    
-	ccf_mcw <- as.vector(ccf(x = detrend(set[,1]), y = detrend(set[,3]), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
-	ccf_mct <- as.vector(ccf(x = detrend(set[,1]), y = detrend(set[,2]), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
+	ccf_mcw <- as.vector(ccf(x = as.vector(detrend(set[,1])), y = as.vector(detrend(set[,3])), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
+	ccf_mct <- as.vector(ccf(x = as.vector(detrend(set[,1])), y = as.vector(detrend(set[,2])), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
 
 	tl_mcw <- which.max(abs(ccf_mcw))
 	tl_mct <- which.max(abs(ccf_mct))
