@@ -10,7 +10,8 @@ Optimal time-lag detection by means of the pre-whitening procedure.}
 tlag_detection(scalar_var, 
                tsonic_var, 
                w_var,
-               mfreq, 
+               mfreq,
+               wdt=5,
                model = "ar", 
                LAG.MAX=mfreq*10,
                lws=0,
@@ -33,7 +34,10 @@ tlag_detection(scalar_var,
   \item{mfreq}{
   acquisition frequency.
   }
-  \item{model}{
+  \item{wdt}{
+  width of the temporal window for smoothing the CCF.
+  }
+\item{model}{
   an ARIMA model; if provided, it is used to prewhiten both series.
   Otherwise, an AR(p) model (the p order is selected by AIC) is fitted to the x-series and used to pre-whiten
   both series.
@@ -60,22 +64,22 @@ tlag_detection(scalar_var,
 \value{
 A list containing the following components (to update):
 
-\item{mcw}{Detected time lag (sec) by maximum covariance using vertical wind speed (MCW).},
-\item{mct}{Detected time lag (sec) by maximum covariance using sonic temperature (MCT).},
-\item{mcw_win}{Detected time lag (sec) by maximum covariance using vertical wind speed in a pre-specified temporal window (MCWw).},
-\item{mct_win}{Detected time lag (sec) by maximum covariance using sonic temperature in a pre-specified temporal window (MCTw).},
-\item{pww}{Detected time lag (sec) by pre-whitening using vertical wind speed (PWW).},
-\item{pwt}{Detected time lag (sec) by pre-whitening using sonic temperature (PWT).},  
-\item{pwb}{Detected time lag (sec) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).},
-\item{cor_pww}{Correlation estimate of the peak of PWW.},
-\item{cor_pwt}{Correlation estimate of the peak of PWT.},
-\item{cor_pwb}{Correlation estimate of the peak of PWB.},
-\item{cov_mcw}{Covariance estimate of the peak of MCW.},
-\item{cov_mct}{Covariance estimate of the peak of MCT.},
-\item{cov_mcw_win}{Covariance estimate of the peak of MCWw.},
-\item{cov_mct_win}{Covariance estimate of the peak of MCTw.},
-\item{cov_pww}{Covariance estimate of the peak of PWW.},
-\item{cov_pwt}{Covariance estimate of the peak of PWT.},
+\item{mcw}{Detected time lag (sec) by maximum covariance using vertical wind speed (MCW).}
+\item{mct}{Detected time lag (sec) by maximum covariance using sonic temperature (MCT).}
+\item{mcw_win}{Detected time lag (sec) by maximum covariance using vertical wind speed in a pre-specified temporal window (MCWw).}
+\item{mct_win}{Detected time lag (sec) by maximum covariance using sonic temperature in a pre-specified temporal window (MCTw).}
+\item{pww}{Detected time lag (sec) by pre-whitening using vertical wind speed (PWW).}
+\item{pwt}{Detected time lag (sec) by pre-whitening using sonic temperature (PWT).} 
+\item{pwb}{Detected time lag (sec) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).}
+\item{cor_pww}{Correlation estimate of the peak of PWW.}
+\item{cor_pwt}{Correlation estimate of the peak of PWT.}
+\item{cor_pwb}{Correlation estimate of the peak of PWB.}
+\item{cov_mcw}{Covariance estimate of the peak of MCW.}
+\item{cov_mct}{Covariance estimate of the peak of MCT.}
+\item{cov_mcw_win}{Covariance estimate of the peak of MCWw.}
+\item{cov_mct_win}{Covariance estimate of the peak of MCTw.}
+\item{cov_pww}{Covariance estimate of the peak of PWW.}
+\item{cov_pwt}{Covariance estimate of the peak of PWT.}
 \item{cov_pwb}{Covariance estimate of the peak of PWB.} 
 }
 \references{
