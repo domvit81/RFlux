@@ -83,7 +83,7 @@ A list containing the following components (to update):
 \item{cov_pwb}{Covariance estimate of the peak of PWB.} 
 }
 \references{
-Vitale et al. (in prep) Optimal Time Lag Detection for Eddy Covariance Data Acquisition Systems%% ~put references to the literature/web site here ~
+Vitale et al. (in review) A pre-whitening with block-bootstrap cross-correlation procedure for temporal alignment of data sampled by eddy covariance systems%% ~put references to the literature/web site here ~
 }
 \author{
 Domenico Vitale
