@@ -1,9 +1,9 @@
 
-tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, model = "ar", LAG.MAX=mfreq*10, lws=0, uws=5, Rboot, plot.it=FALSE,...) 
+tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model = "ar", LAG.MAX=mfreq*10, lws=0, uws=5, Rboot, plot.it=FALSE,...) 
 {
 
-if(mfreq==20) wdt <- 11
-if(mfreq==10) wdt <- 5
+#if(mfreq==20) wdt <- 11
+#if(mfreq==10) wdt <- 5
 
    filter.mod = function(x, model) {
     	x <- x - mean(x, na.rm=TRUE)
