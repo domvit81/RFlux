@@ -104,11 +104,11 @@ N <- nrow(rawdata)
 timestamp_orig <- strptime("0000.00", format="\%H\%M.\%OS", tz="GMT") + seq(1, N, 1);
 data.xts <- xts(rawdata, order.by=timestamp_orig);
 
-## Detecting time lag betweem CO2 and vertical wind speed (W) by using an AR model (default)
+## Detecting time lag between CO2 and vertical wind speed (W) by using an AR model (default)
 tlag_co2_out <- tlag_detection(scalar_var=rawdata$CO2, tsonic_var=rawdata$T_SONIC, w_var=rawdata$W,
                                model="ar", mfreq=20, lws=0, uws=2, Rboot=29,
                                plot.it=TRUE)
-tlag_co2_out$tlag_ref
+tlag_co2_out
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
