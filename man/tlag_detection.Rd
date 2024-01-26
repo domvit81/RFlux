@@ -5,7 +5,7 @@
 Time-lag detection
 }
 \description{
-Optimal time-lag detection by means of the pre-whitening procedure.}
+Time-lag detection by means of covariance maximization (CM), pre-whitening (PW), and pre-whitening with bootstrap (PWB) procedures.}
 \usage{
 tlag_detection(scalar_var, 
                tsonic_var, 
@@ -35,7 +35,7 @@ tlag_detection(scalar_var,
   acquisition frequency.
   }
   \item{wdt}{
-  width of the temporal window for smoothing the CCF.
+  width of the temporal window for smoothing the CCF (only for PWB procedure).
   }
 \item{model}{
   an ARIMA model; if provided, it is used to prewhiten both series.
