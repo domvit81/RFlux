@@ -64,13 +64,13 @@ tlag_detection(scalar_var,
 \value{
 A list containing the following components (to update):
 
-\item{mcw}{Detected time lag (sec) by maximum covariance using vertical wind speed (MCW).}
-\item{mct}{Detected time lag (sec) by maximum covariance using sonic temperature (MCT).}
-\item{mcw_win}{Detected time lag (sec) by maximum covariance using vertical wind speed in a pre-specified temporal window (MCWw).}
-\item{mct_win}{Detected time lag (sec) by maximum covariance using sonic temperature in a pre-specified temporal window (MCTw).}
-\item{pww}{Detected time lag (sec) by pre-whitening using vertical wind speed (PWW).}
-\item{pwt}{Detected time lag (sec) by pre-whitening using sonic temperature (PWT).} 
-\item{pwb}{Detected time lag (sec) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).}
+\item{mcw}{Detected time lag (timesteps) by maximum covariance using vertical wind speed (MCW).}
+\item{mct}{Detected time lag (timesteps) by maximum covariance using sonic temperature (MCT).}
+\item{mcw_win}{Detected time lag (timesteps) by maximum covariance using vertical wind speed in a pre-specified temporal window (MCWw).}
+\item{mct_win}{Detected time lag (timesteps) by maximum covariance using sonic temperature in a pre-specified temporal window (MCTw).}
+\item{pww}{Detected time lag (timesteps) by pre-whitening using vertical wind speed (PWW).}
+\item{pwt}{Detected time lag (timesteps) by pre-whitening using sonic temperature (PWT).} 
+\item{pwb}{Detected time lag (timesteps) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).}
 \item{cor_pww}{Correlation estimate of the peak of PWW.}
 \item{cor_pwt}{Correlation estimate of the peak of PWT.}
 \item{cor_pwb}{Correlation estimate of the peak of PWB.}
