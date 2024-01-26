@@ -1,9 +1,7 @@
 
+
 tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model = "ar", LAG.MAX=mfreq*10, lws=0, uws=5, Rboot, plot.it=FALSE,...) 
 {
-
-#if(mfreq==20) wdt <- 11
-#if(mfreq==10) wdt <- 5
 
    filter.mod = function(x, model) {
     	x <- x - mean(x, na.rm=TRUE)
@@ -18,8 +16,7 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
 
 
 	set <- na.omit(cbind(na.approx(scalar_var, na.rm=FALSE), na.approx(tsonic_var, na.rm=FALSE), na.approx(w_var, na.rm=FALSE)))
-    
-    
+        
 	if (model=="ar"){
 	if (bvr.test(set[,1])$p.val<0.01 & bvr.test(set[,2])$p.val<0.01 & bvr.test(set[,3])$p.val<0.01) {
 	x <- set[,1];
@@ -71,8 +68,8 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
 	
     
 ## Maximum Covariance Procedure    
-	ccf_mcw <- as.vector(ccf(x = as.vector(detrend(set[,1])), y = as.vector(detrend(set[,3])), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
-	ccf_mct <- as.vector(ccf(x = as.vector(detrend(set[,1])), y = as.vector(detrend(set[,2])), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
+	ccf_mcw <- as.vector(ccf(x = detrend(set[,1]), y = detrend(set[,3]), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
+	ccf_mct <- as.vector(ccf(x = detrend(set[,1]), y = detrend(set[,2]), lag.max=LAG.MAX, plot=FALSE, type="covariance", na.action=na.pass)$acf)
 
 	tl_mcw <- which.max(abs(ccf_mcw))
 	tl_mct <- which.max(abs(ccf_mct))
@@ -104,6 +101,7 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
 
 	cov_pww <- ccf_mcw[tl_pww]
 	cov_pwt <- ccf_mcw[tl_pwt]
+
 
 
 ## PreWhitening + BOOTSTRAPPING + Smoothing
@@ -187,19 +185,6 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
 	peak_ind <- which.max(c(abs(ccf_ct)[peak_win_ct], abs(ccf_cw)[peak_win_cw], abs(ccf_tc)[peak_win_tc], abs(ccf_wc)[peak_win_wc]))
 	peak_ref3 <- c(peak_win_ct, peak_win_cw, peak_win_tc, peak_win_wc)[peak_ind]
 	
-	if (peak_ind==1) CRIN <- cred_win_ct
-	if (peak_ind==2) CRIN <- cred_win_cw
-	if (peak_ind==3) CRIN <- cred_win_tc
-	if (peak_ind==4) CRIN <- cred_win_wc
- 
-
-	local_max <- function(x) which(x - shift(x, 1) > 0 & x - shift(x, 1, type='lead') > 0)
-	#local_min <- function(x) which(x - shift(x, 1) < 0  & x - shift(x, 1, type='lead') < 0) 
-
-	if(length(CRIN)>2) peak_ref4 <- local_max(abs(ccf_mcw)[CRIN]) + CRIN[1] - 1
-	if(length(CRIN)==2) peak_ref4 <- local_max(abs(ccf_mcw)[(CRIN[1]-1):(CRIN[2]+1)]) + CRIN[1] - 2
-	if(length(peak_ref4)==1) peak_ref5 <- peak_ref4
-	if(length(peak_ref4)!=1) peak_ref5 <- peak_ref3
 
 ## PLOT
     if (plot.it) {
@@ -263,14 +248,18 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
  
     return(list(
     "mcw" = tl_mcw - LAG.MAX - 1,
-    "mct" = tl_mct - LAG.MAX - 1,
-    "mcw_win" = tl_mcw_win - LAG.MAX - 1,
-    "mct_win" = tl_mct_win - LAG.MAX - 1,
-    "pww" = tl_pww - LAG.MAX - 1,
-    "pwt" = tl_pwt - LAG.MAX - 1,  
-    "pwb" = peak_ref - LAG.MAX - 1,
+    "mct" = tl_mct - LAG.MAX-1,
+    "mcw_win" = tl_mcw_win - LAG.MAX-1,
+    "mct_win" = tl_mct_win - LAG.MAX-1,
+    "pww" = tl_pww - LAG.MAX-1,
+    "pwt" = tl_pwt - LAG.MAX-1,  
+	"pwb" = peak_ref - LAG.MAX-1,
+    "pwb_lci"= hdis[1] - LAG.MAX-1,
+    "pwb_uci"= hdis[2] - LAG.MAX-1,
     "cor_pww" = cor_pww,
     "cor_pwt" = cor_pwt,
+    "cor_pww_win" = cor_pww_win,
+    "cor_pwt_win" = cor_pwt_win,
     "cor_pwb" = corr_max,
     "cov_mcw" = cov_mcw,
     "cov_mct" = cov_mct,
@@ -280,4 +269,3 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
     "cov_pwt" = cov_pwt,
     "cov_pwb" = cov_pwb  
     ))
-}
