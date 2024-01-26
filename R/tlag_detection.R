@@ -267,3 +267,4 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
     "cov_pwt" = cov_pwt,
     "cov_pwb" = cov_pwb  
     ))
+}
