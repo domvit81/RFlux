@@ -85,8 +85,8 @@ A list containing the following components (to update):
 \item{cov_pwb}{Covariance estimate of the peak of PWB.} 
 }
 \references{
-Vitale et al. (2024) A pre-whitening with block-bootstrap cross-correlation procedure for temporal alignment of data sampled by eddy covariance systems,  
-Environ Ecol Stat 31, 219–244, doi: \url{https://doi.org/10.1007/s10651-024-00615-9}
+Vitale, D, A pre-whitening with block-bootstrap cross-correlation procedure for temporal alignment of data sampled by eddy covariance systems,  
+Environ Ecol Stat 31, 219–244, doi: \url{https://doi.org/10.1007/s10651-024-00615-9}, 2024
 }
 \author{
 Domenico Vitale
