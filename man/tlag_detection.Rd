@@ -71,8 +71,8 @@ A list containing the following components (to update):
 \item{pww}{Detected time lag (timesteps) by pre-whitening using vertical wind speed (PWW).}
 \item{pwt}{Detected time lag (timesteps) by pre-whitening using sonic temperature (PWT).} 
 \item{pwb}{Detected time lag (timesteps) by pre-whitening woth bootsptrap using vertical wind speed or sonic temperature (PWB).}
-\item{pwb_lci}{Lower limti of the 95% HDI for the PWB estimate (measure of uncertainty).}
-\item{pwb_uci}{Upper limit of the 95% HDI for PWB estimate (measure of uncertainty).}
+\item{pwb_lci}{Lower limit of the 95\% HDI for the PWB estimate (measure of uncertainty).}
+\item{pwb_uci}{Upper limit of the 95\% HDI for PWB estimate (measure of uncertainty).}
 \item{cor_pww}{Correlation estimate of the peak of PWW.}
 \item{cor_pwt}{Correlation estimate of the peak of PWT.}
 \item{cor_pwb}{Correlation estimate of the peak of PWB.}
