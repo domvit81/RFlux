@@ -140,9 +140,9 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
  	hdis_tc2 <- HDInterval::hdi(ccfs_tc2, credMass=.95);
 
 
-	maps <- round(c(bayestestR::map_estimate(abs(ccfs_ct1+rnorm(length(ccfs_ct1),0,0.0001))), bayestestR::map_estimate(abs(ccfs_cw1+rnorm(length(ccfs_cw1),0,0.0001))), bayestestR::map_estimate(abs(ccfs_tc1+rnorm(length(ccfs_tc1),0,0.0001))), bayestestR::map_estimate(abs(ccfs_wc1+rnorm(length(ccfs_wc1),0,0.0001)))),0)
+	maps <- round(c(bayestestR::map_estimate(abs(ccfs_ct1+rnorm(length(ccfs_ct1),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_cw1+rnorm(length(ccfs_cw1),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_tc1+rnorm(length(ccfs_tc1),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_wc1+rnorm(length(ccfs_wc1),0,0.0001)))$MAP_Estimate),0)
 
-	maps2 <- round(c(bayestestR::map_estimate(abs(ccfs_ct2+rnorm(length(ccfs_ct2),0,0.0001))), bayestestR::map_estimate(abs(ccfs_cw2+rnorm(length(ccfs_cw2),0,0.0001))), bayestestR::map_estimate(abs(ccfs_tc2+rnorm(length(ccfs_tc2),0,0.0001))), bayestestR::map_estimate(abs(ccfs_wc2+rnorm(length(ccfs_wc2),0,0.0001)))),0)
+	maps2 <- round(c(bayestestR::map_estimate(abs(ccfs_ct2+rnorm(length(ccfs_ct2),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_cw2+rnorm(length(ccfs_cw2),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_tc2+rnorm(length(ccfs_tc2),0,0.0001)))$MAP_Estimate, bayestestR::map_estimate(abs(ccfs_wc2+rnorm(length(ccfs_wc2),0,0.0001)))$MAP_Estimate),0)
      
 	
     corr_est_s <- c(ccfs_ct[maps[1]], ccfs_cw[maps[2]], ccfs_tc[maps[3]], ccfs_wc[maps[4]]) 
