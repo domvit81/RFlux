@@ -62,7 +62,7 @@ Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-202
 Domenico Vitale
 }
 \note{
-The output of \code{\link{qcStat}} constiutes one of input files required by the \code{\link{ecworkset}} function.
+The output of \code{\link{qcStat}} constitutes one of input files required by the \code{\link{ecworkset}} function.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
