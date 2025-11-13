@@ -47,7 +47,7 @@ LI-COR Biosciences: EddyPro 7.0.4: Help and User's Guide, LI-COR Biosciences, Li
 
 Vitale, D. Fratini, G. Bilancia, M. Nicolini, G. Sabbatini, S. Papale, D.
 A robust data cleaning procedure for eddy covariance flux measurements,
-Biogeosciences Discussions, 2019, pp 1-36, doi: \url{https://doi.org/10.5194/bg-2019-270}.
+Biogeosciences, 17, 1367--1391, doi: \url{https://doi.org/10.5194/bg-17-1367-2020}, 2020.
 }
 \author{
 Domenico Vitale, Dario Papale
